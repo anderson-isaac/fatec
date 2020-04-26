@@ -1,0 +1,25 @@
+
+
+{
+    "sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "<i class='material-icons rotate'>sync</i.",
+    "sProcessing": "<i class='material-icons rotate'>sync</i.",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "<i class='material-icons'>search</i>",
+    "oPaginate": {
+        "sNext": "<i class='material-icons'>keyboard_arrow_right</i>",
+        "sPrevious": "<i class='material-icons'>keyboard_arrow_left</i>",
+        "sFirst": "<i class='material-icons'>first_page</i>",
+        "sLast": "<i class='material-icons'>last_page</i>"
+    },
+    "oAria": {
+        "sSortAscending": ": Ordenar colunas de forma ascendente",
+        "sSortDescending": ": Ordenar colunas de forma descendente"
+    }
+}

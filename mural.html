@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+  <html lang="pt-br">
+  <!--<![endif]-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+
+    <title>Mural FATEC </title>
+    <base href="./"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/normalize.css">        
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./assets/js/vue.min.js"></script>
+    <script src="./assets/js/axios.min.js"></script>
+  </head>
+
+  <body>
+
+    <header class="load-me" data-src="./components/header.html"></header>
+    
+    <section id="mural" class="page-section">      
+      <nav id="nav-component" class="nav locked">
+        <button type="button" data-tab="#mural-vagas" class="nav-link active">Vagas</button>
+        <button type="button" data-tab="#mural-avisos" onclick="carregarAvisos()" class="nav-link">Avisos</button>
+      </nav>                
+      <div id="nav-area" class="container tall">   
+
+        <div id="mural-vagas" class="nav-area-item active">
+          <div class="vue-loading" v-if="loading">
+            <i class="fa fa-spinner fa-spin"></i>
+          </div>
+          <ul v-for="vaga in vagas" v-if="!errored">
+            <li><b>Empresa</b> {{ vaga.empresa }}</li>
+            <li><b>Vaga</b> {{ vaga.vaga }}</li>
+            <li><b>Postado em</b> {{ vaga.postado }}</li>
+            <li><a :href="`./vaga/${vaga.id}`" class="btn btn-primary">Ver mais</a></li>
+          </ul>
+          <div class="alert alert-danger" v-if="errored">
+            <p><i class="fa fa-error"></i> Ocorreu um erro ao carregar as vagas, por favor, tente novamente mais tarde. </p>
+          </div>
+
+          <div class="text-center" v-if="vagas">
+            <div class="load-more">
+              <button type="button" v-on:click="carregarVagas">
+                <i class="fa fa-plus"></i>
+              </button>
+              Carregar mais...
+            </div>
+            <div class="alert alert-info reached">Não existem mais vagas a serem exibidas.</div>
+          </div>
+        </div>
+
+        <div id="mural-avisos" class="nav-area-item">             
+          <div class="vue-loading" v-if="loading">
+            <i class="fa fa-spinner fa-spin"></i>
+          </div>
+          <ul v-for="aviso in avisos">
+            <div class="card">
+              <a :href="`./aviso.html?id=${ aviso.id }`" v-if="aviso.capa">
+                <img class="card-img-top" :src="`${ aviso.capa }`" alt="">
+              </a>
+              <div class="card-body">                
+                <h5 class="card-title">
+                  <div class="author">
+                    <a :href="`./aviso.html?id=${ aviso.id }`">
+                      <img :src="`${ aviso.autor_foto }`" alt="" class="profile-photo">
+                    </a>
+                    <small>
+                      <a :href="`./professor.html?id=${aviso.autor}`">
+                        {{ aviso.autor_nome }}
+                      </a>
+                    </small>
+                  </div>                  
+                  <a :href="`./aviso.html?id=${ aviso.id }`">
+                  {{ aviso.titulo }}
+                  </a>
+                </h5>
+                <p class="card-text">
+                  {{ aviso.resumo }}
+                </p>
+                <a :href="`./aviso.html?id=${ aviso.id }`" class="card-link">
+                  Continuar lendo...
+                </a>        
+                <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>                  
+                <div class="jumbotron mt-2 p-1">
+                  <button href="" class="card-link">
+                    <i class="fa fa-share-alt"></i>
+                  </button>
+                  <button class="card-link">
+                    <i class="fa fa-star"></i>
+                  </button>
+                </div>  
+              </div>
+            </div>
+          </ul>
+          <div class="text-center" v-if="avisos && !loading">
+            <div class="load-more">
+              <button type="button" v-on:click="this.carregarAvisos">
+                <i class="fa fa-plus"></i>
+              </button>
+              Carregar mais...
+            </div>
+            <div class="alert alert-info reached">Não existem mais avisos a serem exibidos.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>    
+
+    <!-- VUE :: VAGAS APP -->
+    <script>
+
+      var vagasURL = './server/vagas.php';
+      var vagasApp = new Vue({
+        el: '#mural-vagas',
+        data () {
+          return {    
+            info: null,        
+            vagas: null,
+            loading: true,
+            errored: false,
+            slice: 0
+          }
+        },
+        methods: {
+          carregarVagas: function() {      
+            var scrollHeight = $('#mural-vagas ul').length ? $('#mural-vagas .load-more').position().top : 0;                 
+            $('#mural-vagas')
+              .find('.load-more i')
+              .removeClass('fa-plus')
+              .addClass('fa-spinner fa-spin');
+            this.slice += 6;           
+            axios
+            .post(vagasURL, {
+              slice: this.slice
+            })
+            .then(response => {
+              this.info = response.data.vagas;
+              if (this.info.length < 6) {
+                $('#mural-vagas .load-more').remove();
+                $('#mural-vagas .reached').show();
+              }
+              this.info.forEach(element => {
+                this.vagas.push(element);
+              });
+            })
+            .catch(error => {
+              console.log(error)
+              this.errored = true
+            })
+            .finally(() => {
+              this.loading = false;              
+              $('#mural-vagas')
+                .find('.load-more i')
+                .removeClass('fa-spinner fa-spin')
+                .addClass('fa-plus');
+              $('html, body').animate({
+                scrollTop : scrollHeight + 60
+              }, 500);
+            })
+          }
+        },
+        mounted () {
+          axios
+            .post(vagasURL, {
+              slice: this.slice
+            })
+            .then(response => {              
+              this.vagas = response.data.vagas;              
+            })
+            .catch(error => {
+              console.log(error)
+              this.errored = true
+            })
+            .finally(() => {
+              this.loading = false;
+              $('#nav-component').removeClass('locked');
+              if (this.vagas.length < 6) {
+                $('#mural-vagas .load-more').remove();
+                $('#mural-vagas .reached').show();
+              }
+            })
+        }
+      });      
+    </script>
+
+    <!-- VUE :: AVISOS APP -->
+    <script>
+      var carregarAvisos = "";
+      var avisosURL = './server/avisos.php';
+      var avisosApp = new Vue({
+        el: '#mural-avisos',
+        data () {
+          return {    
+            info: null,        
+            avisos: [],
+            loading: true,
+            errored: false,
+            slice: 0,
+            firstLoad: true,
+          }
+        },
+        methods: {
+          carregarAvisos: function(e) {  
+            var scrollHeight = $('#mural-avisos ul').length ? $('#mural-avisos .load-more').position().top : 0;           
+            $('#mural-avisos')
+              .find('.load-more i')
+              .removeClass('fa-plus')
+              .addClass('fa-spinner fa-spin');  
+            axios
+            .post(avisosURL, {
+              slice: this.slice
+            })
+            .then(response => {
+              this.info = response.data.avisos;
+              if (this.info.length < 6) {
+                $('#mural-avisos .load-more').remove();
+                $('#mural-avisos .reached').show();
+              }              
+              this.info.forEach(element => {
+                this.avisos.push(element);
+              });
+            })
+            .catch(error => {
+              console.log(error)
+              this.errored = true
+            })
+            .finally(() => {              
+              this.loading = false;              
+              $('#mural-avisos')
+                .find('.load-more i')
+                .removeClass('fa-spinner fa-spin')
+                .addClass('fa-plus');
+                console.log(scrollHeight);
+              $('html, body').animate({
+                scrollTop : this.firstLoad ? 0 : (scrollHeight + $('header').height() - 30)
+              }, 500);
+              this.slice += 6;
+              this.firstLoad = false;
+            })
+          }
+        },
+        mounted () {
+          carregarAvisos = this.carregarAvisos;          
+        }
+      });      
+    </script>
+    
+    <footer class="load-me" data-src="./components/footer.html"></footer>
+
+    <script src="./assets/js/jquery.3.2.1.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+
+  </body>
+</html>

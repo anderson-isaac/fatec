@@ -1,0 +1,51 @@
+
+// 332414
+$primary: #c80b0b;
+$secondary: #585453;
+$tertiary: #ffb507;
+$mask: #0e3767;
+$success: #3fc253;
+$info: #a5e5f3;
+$warning: #e8ab40;
+$danger: #ffadbb;
+$error: #e92d4d;
+$light: #eedfd8;
+$silver: #eee;
+$lead: #616161;
+$gray: #a79f9f;
+$dark: #474749;
+$lemon: #f2fad5;
+$purple: #9205ea;
+$pink: #f43b99;
+$estados: #00a819, #ffe600, #0066ff, #f50029, $gray;
+
+$theme-colors : (
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark
+);
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+$font-family-sans-serif : 'Open Sans', Arial, sans-serif;
+$font-family-title: 'Proza Libre', Arial, sans-serif;
+$font-family-base:  $font-family-sans-serif;
