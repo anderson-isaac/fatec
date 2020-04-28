@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+  <html lang="pt-br">
+  <!--<![endif]-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+
+    <title>Mural FATEC </title>
+    <base href="./"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/normalize.css">  
+    <link rel="stylesheet" href="./assets/css/sweetalert.css">      
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./assets/js/vue.min.js"></script>
+    <script src="./assets/js/axios.min.js"></script>
+  </head>
+
+  <body>
+
+    <header class="load-me" data-src="./components/header.html"></header>
+    
+    <section class="page-section">
+        <nav class="app-nav">
+            <a href="./mural.html">
+                <i class="fa fa-chevron-left"></i>
+            </a>        
+            <b>Voltar</b>    
+        </nav>
+        <div class="container tall"> 
+            <div id="vaga">
+                <div class="vue-loading" v-if="loading">
+                    <i class="fa fa-spinner fa-spin"></i>
+                </div>
+                <div class="card" v-else>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Descrição da vaga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <td>{{ vaga.empresa }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Vaga</th>
+                                    <td>{{ vaga.vaga }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Postado em</th>
+                                    <td>{{ vaga.postado }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="card-text">
+                            {{ vaga.descricao }}
+                        </p>
+                        <button type="button" class="apply btn btn-success btn-full mt-3" :data-id="vaga.id" v-if="vaga.candidato">
+                            <i class="fa fa-check"></i> 
+                            Você já está concorrendo a essa vaga
+                        </button>
+                        <button type="button" class="apply btn btn-primary btn-full mt-3" :data-id="vaga.id" v-else>
+                            <i class="fa fa-check-circle"></i> 
+                            Quero me candidatar
+                        </button>
+                        <hr>
+                        <h5 class="card-title">                    
+                            <div class="author">
+                                <img :src="vaga.autor_foto" alt="" class="profile-photo">
+                                <small>
+                                    <a :href="`./professor.html?id=${ vaga.autor_id }`">
+                                        {{ vaga.autor_nome }}
+                                    </a>
+                                </small>
+                            </div>                        
+                        </h5>                
+                    </div>
+                    <button type="button" class="favorite favorite-ok" :data-id="vaga.id" v-if="vaga.favorito">
+                        <i class='fa fa-check'></i> Adicionado aos favoritos
+                    </button>
+                    <button type="button" class="favorite" :data-id="vaga.id" v-else>
+                        <i class="fa fa-star fa-pulse"></i> Adicionar aos favoritos
+                    </button>             
+                </div>
+            </div>
+        </div>
+    </section>    
+        
+    <footer class="load-me" data-src="./components/footer.html"></footer>
+
+    <script src="./assets/js/jquery.3.2.1.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/sweetalert.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <!-- VUE :: VAGAS APP -->
+    <script>
+
+      var vagasURL = './server/vaga.php';
+      var vagasApp = new Vue({
+        el: '#vaga',
+        data () {
+          return {    
+            vaga: null,                    
+            loading: true,
+            errored: false,
+            candidato_class: '',
+            id: getUrlParameter('id')
+          }
+        },
+        mounted () {
+          axios
+            .post(vagasURL, {
+              id: this.id
+            })
+            .then(response => {              
+              this.vaga = response.data;              
+            })
+            .catch(error => {
+              console.log(error)
+              this.errored = true
+            })
+            .finally(() => {
+              this.loading = false;
+            })
+        }
+      });      
+    </script>
+
+  </body>
+</html>

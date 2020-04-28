@@ -1,59 +1,19 @@
 var base = $('base').attr('href');
 
-if ($('.yt-player').length) {
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+function getUrlParameter(sParam) {
+  var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
 
-  var videos = [];
-  $('.yt-player').each(function(i,v) {
-    $(this).attr('id', 'yt-player-' + i);
-    videos.push($(this));
-  });
-  var player = [];
-  function onYouTubeIframeAPIReady() {
-    var h = 0;
-    var w = 0;
-    $.each(videos,function(i, val) {
-      h = val.data('height');
-      w = val.data('width');
-      player[i] = new YT.Player(val[0], {
-        height: h,
-        width: w,
-        videoId: val.data('v'),
-        events: {
-          'onStateChange': onPlayerStateChange
-        },
-        playerVars: {
-          'autoplay': 0,
-          'controls': 1,
-          'autohide': 0,
-          'enablejsapi': 1,
-          'wmode': 'opaque',
-          'origin': $('base').attr('href')
-        }
-      });
-    });
+  for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+          return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
   }
-
-  function onPlayerReady(event) {
-    event.target.playVideo();
-  }
-
-  var done = false;
-  function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING && !done) {
-      setTimeout(stopVideo, 6000);
-      done = true;
-    }
-  }
-
-  function stopVideo() {
-    player.stopVideo();
-  }
-
-}
+};
 
 function captchaCallback() {
   //  Initialize Recaptcha
@@ -107,9 +67,6 @@ function getAddress(cep, _parent) {
  * Carrega os componentes principais: header, nav, footer
  */
 function loadComponents() {
-  $.ajaxSetup ({
-    cache: false
-  });
   if ($('.load-me').length) {
     $('.load-me').each(function() {
       var src = $(this).data('src');
@@ -683,6 +640,92 @@ $(function() {
     },600);
   });
 
+  /**
+   * Adicionar um item aos favoritos
+   */
+  $(document).on('click', '.favorite', function() {
+    var _t = $(this);
+    var id = $(this).data('id');
+    var url = base + 'server/favoritar.php';
+    $.ajax({
+      url: url,
+      data: "&id=" + id,
+      method: "post",
+      dataType: "json",
+      beforeSend: function() {
+        _t.find('i.fa')
+          .removeClass('fa-star fa-pulse')
+          .addClass('fa-refresh fa-spin');
+      },
+      complete: function() {
+        _t.find('i.fa')
+          .removeClass('fa-refresh fa-spin')
+          .addClass('fa-star fa-pulse');
+      },
+      success: function(res) {
+        if (res.status == "success") {
+          _t.addClass('favorite-ok')
+            .html("<i class='fa fa-star'></i> Adicionado aos favoritos")
+        }
+        swal({
+          icon : res.status,
+          title : res.title,
+          text : res.mensagem
+        })
+      },
+      error: function() {
+        swal({
+          icon : "error",
+          title : "Erro",
+          text : "Não foi possível adicionar esse item aos favoritos"
+        })
+      }
+    });
+  });
+
+  /**
+   * Candidatar a uma vaga
+   */
+  $(document).on('click', '.apply', function() {
+    var _t = $(this);
+    var id = $(this).data('id');
+    var url = base + 'server/candidatar.php';
+    $.ajax({
+      url: url,
+      data: "&id=" + id,
+      method: "post",
+      dataType: "json",
+      beforeSend: function() {
+        _t.find('i.fa')
+          .removeClass('fa-check-circle')
+          .addClass('fa-refresh fa-spin');
+      },
+      complete: function() {
+        _t.find('i.fa')
+          .removeClass('fa-refresh fa-spin')
+          .addClass('fa-check-circle');
+      },
+      success: function(res) {
+        if (res.status == "success") {
+          _t.removeClass('btn-primary')
+            .addClass('btn-success');
+          _t.html("<i class='fa fa-check'></i> Você já está concorrendo a essa vaga")
+        }
+        swal({
+          icon : res.status,
+          title : res.title,
+          text : res.mensagem
+        });
+      },
+      error: function() {
+        swal({
+          icon : "error",
+          title : "Erro",
+          text : "Sua candidatura não pôde ser confirmada para esta vaga"
+        })
+      }
+    });
+  });
 
   loadComponents();
 

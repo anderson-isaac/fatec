@@ -50,7 +50,7 @@ label {
   }
 }
 hr {
-  border-color: rgba($primary, 25%);
+  border-color: rgba($dark, 15%);
 }
 .alert {
   text-align: center;
@@ -74,12 +74,12 @@ button {
 /*  HEADER  */
 /*==========*/
 header {
-  background-color: transparent;  
+  background-color: transparent;
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
-  z-index: 1000;  
+  z-index: 1000;
   .navbar {
     padding-left: 0;
     padding-right: 0;
@@ -90,13 +90,13 @@ header {
     z-index: 10;
   }
   & .dropdown-menu {
-    display: block;    
+    display: block;
     pointer-events: none;
     padding: 0;
     top: -300%;
     left: -2px;
-    right: -2px;    
-    background-color: transparent;  
+    right: -2px;
+    background-color: transparent;
     @include border-radius(0);
     @include translateY(67px);
     @include transition(.5s);
@@ -113,7 +113,7 @@ header {
       top: -20px;
     }
     & a {
-      background-color: transparent;  
+      background-color: transparent;
       display: inline-block;
       height: 40px;
       line-height: 40px;
@@ -121,21 +121,21 @@ header {
       text-align: right;
       border-bottom: 1px solid rgba($light, 15%);
       color: #fff;
-      position: relative;                 
+      position: relative;
       &:hover, &:focus, &:active {
-        color: #fff;      
-        background-color: transparent;  
+        color: #fff;
+        background-color: transparent;
       }
       &:last-child {
         border-bottom: none;
-      }      
+      }
       i.fa {
         position: absolute;
         right: 15px;
         top: 5px;
         height: 30px;
         width: 30px;
-        background-color: rgba(darken($primary, 30%), 40%);        
+        background-color: rgba(darken($primary, 30%), 40%);
         color: #fff;
         text-align: center;
         display: block;
@@ -150,7 +150,7 @@ header {
       }
     }
     &.show {
-      top: 0%;       
+      top: 0%;
       pointer-events: auto;
     }
   }
@@ -193,19 +193,53 @@ header {
     &.dropdown-toggle:after {
       display: none;
     }
-    
+
   }
   & ~ section.container {
     padding-top: 3rem;
   }
 }
+.filters {
+  margin-bottom: 15px;
+  .custom-control-label {
+    position: static;
+    font-weight: 400;
+    &:before {
+      background-color: #fff;
+      @include box-shadow(0 3px 3px rgba($dark, 25%)); 
+    }
+    &:before, &:after {
+      top: 0.17rem;
+    }
+  }
+}
+.favorite {
+  background-color: whitesmoke;
+  font-size: 12px !important;
+  border: none;  
+  width: 100%;
+  text-align: center;
+  @include border-radius(0 0 5px 5px);
+  i.fa {
+    color: $primary;
+  }
+  &.favorite-ok {
+    pointer-events: none;
+    background-color: rgba($success, 5%);    
+    color: darken($success, 15%);
+    .fa {
+      color: $success;
+    }
+  }
+}
 .btn {
   @include box-shadow(none !important);
-  .material-icons {
+  .fa {
     font-size: 14px;
     display: inline-block;
     line-height: 20px;
   }
+  font-weight: bold;
   &.btn-primary {
     color: #fff;
   }
@@ -238,6 +272,25 @@ header {
       background-color: darken($light, 10%);
       outline: none;
       @include box-shadow(none);
+    }
+  }
+  &.btn-success {
+    border: none;
+    background-color: rgba($success, 85%);
+  }
+  &.btn-full {
+    width: 100%;
+    text-align: center;
+  }  
+  &.apply {
+    font-size: 12px !important;
+    width: 100%;
+    text-align: center;
+    i.fa {
+      color: #fff;
+    }
+    &.btn-success {
+      pointer-events: none;
     }
   }
 }
@@ -298,7 +351,7 @@ header {
   margin-bottom: 0 !important;
   thead {
     opacity: 0;
-    &.done-loading {      
+    &.done-loading {
       opacity: 1;
     }
     th {
@@ -359,7 +412,7 @@ header {
   .material-icons {
     font-size: 14px;
     &.rotate {
-      font-size: 36px;      
+      font-size: 36px;
     }
   }
   td, th {
@@ -446,7 +499,9 @@ header {
     }
   }
 }
-
+.table {
+  font-size: 12px;
+}
 .clear-btn {
   background-color: transparent;
   border: none;
@@ -468,9 +523,26 @@ header {
     width: 75px;
   }
 }
-
+.swal-text {
+  text-align: center;
+}
+.swal-footer {
+  text-align: center;
+  button {
+    background-color: $primary;
+    color: #fff;
+    line-height: 15px;
+    &:not([disabled]) {
+      &:focus, &:hover {
+        @include box-shadow(none);
+        background-color: $primary;
+      }
+    }
+  }
+}
 .vue-loading {
   padding-top: 4rem;
+  padding-bottom: 4rem;
   color: transparent !important;
   text-align: center;
   .fa {
@@ -482,14 +554,13 @@ header {
   display: flex;
   align-items: center;
   height: 50px;
-  margin: 0 0 14px;
-  background-color: rgba($primary, 33%);
-  border-bottom: 1px solid rgba($primary, 25%);
-  .material-icons {
+  margin: -15px 0 14px;
+  background-color: rgba($secondary, 33%);  
+  i.fa {
     color: #fff !important;
     font-size: 17px !important;
   }
-  button {
+  a {
     color: #fff;
     font-size: 24px;
     width: 50px;
@@ -498,7 +569,11 @@ header {
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    border-right: 1px solid rgba($primary, 25%);
+    text-align: center;
+    background-color: rgba($secondary, 38%);   
+    &:hover, &:focus {
+      text-decoration: none;
+    } 
   }
   > b {
     margin-left: 15px;
@@ -547,7 +622,7 @@ select.form-control {
   }
 }
 .page-section {
-  margin-top: 70px;
+  margin-top: 85px;
   z-index: 900;
 }
 .load-more {
@@ -556,7 +631,7 @@ select.form-control {
   text-align: center;
   font-size: 10px;
   font-weight: bold;
-  width: 100%;    
+  width: 100%;
   button {
     display: block;
     background-color: $secondary;
@@ -573,8 +648,7 @@ select.form-control {
     @include border-radius(50%);
   }
 }
-.reached {
-  display: none;
+.reached {  
   margin-bottom: 3rem;
 }
 
@@ -584,6 +658,7 @@ select.form-control {
 /*=======*/
 #nav-component {
   background-color: #fff;
+  margin-top: -15px;
   margin-bottom: 15px;
   &.locked {
     pointer-events: none;
@@ -600,8 +675,8 @@ select.form-control {
     height: 40px;
     padding: 8px 0;
     display: inline-block;
-    &.active {     
-      color: $primary; 
+    &.active {
+      color: $primary;
       &:before {
         content: "";
         display: block;
@@ -627,17 +702,17 @@ select.form-control {
   position: relative;
   overflow: hidden;
   & > div {
-    position: absolute;    
+    position: absolute;
     left: 100%;
     top: 0;
     width: 100%;
     opacity: 0;
-    @include transition(0.5s);    
+    @include transition(0.5s);
     &.active {
       background-color: rgba($dark, 0);
       position: relative;
       left: 0;
-      opacity: 1;      
+      opacity: 1;
     }
   }
 }
@@ -650,9 +725,10 @@ select.form-control {
   overflow: hidden;
   margin-bottom: 0;
   @include border-radius(5px);
+  @include box-shadow(0 5px 5px rgba($dark, 20%));
   &-body {
     padding: 10px;
-    padding-bottom: 0.75rem;    
+    padding-bottom: 0.75rem;
     img {
       width: 100%;
       display: block;
@@ -662,9 +738,10 @@ select.form-control {
   }
   &-text {
     margin: 5px 0;
+    text-align: justify;
   }
   &-link {
-    color: rgba($primary, 50%);    
+    color: rgba($primary, 50%);
     font-weight: bold;
     &:hover, &:focus {
       text-decoration: underline;
@@ -674,7 +751,7 @@ select.form-control {
     display: flex;
     margin-bottom: 0;
     justify-content: flex-end;
-    background-color: none;    
+    background-color: none;
     background: rgba($secondary, 10%);
   }
   &-link {
@@ -707,7 +784,7 @@ select.form-control {
       @include border-radius(2px);
     }
   }
-  &-title {    
+  &-title {
     position: relative;
     font-size: 1.1rem;
     a {
@@ -749,41 +826,12 @@ select.form-control {
 }
 
 /*===============*/
-/*  MURAL PAGES  */
-/*===============*/
-#mural-pages {
-  i {
-    font-size: 1rem;
-  }
-  .pagination {
-    justify-content: center;
-    .page-item {
-      .page-link {
-        @include border-radius(0);
-        @extend .btn-primary;
-      }
-      &:first-child {
-        .page-link {
-          @include border-radius(7px 0 0 7px);
-        }
-      }
-      &:last-child {
-        .page-link {
-          @include border-radius(0 7px 7px 0);
-        }
-      }
-    }
-  }
-}
-
-
-/*===============*/
 /*  MURAL VAGAS  */
 /*===============*/
 #mural-vagas {
   ul {
     @extend .list-unstyled;
-    border-bottom: 1px solid rgba($primary, 25%);    
+    border-bottom: 1px solid rgba($primary, 25%);
     padding-bottom: 15px;
     &:last-of-type {
       border-bottom: none;
@@ -791,7 +839,6 @@ select.form-control {
     }
     b {
       color: $dark;
-      
     }
     .btn {
       font-weight: bold;
@@ -799,6 +846,13 @@ select.form-control {
       font-size: 13px;
       margin-top: 10px;
     }
+  }
+  .candidato {
+    position: absolute;
+    color: $success;
+    top: 3px;
+    right: 7px;
+    font-size: 15px;
   }
 }
 

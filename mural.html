@@ -9,11 +9,12 @@
 
 
     <title>Mural FATEC </title>
-    <base href="./"/>
+    <base href="http://localhost/fatec/"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="./assets/css/normalize.css">        
+    <link rel="stylesheet" href="./assets/css/sweetalert.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <script src="./assets/js/vue.min.js"></script>
     <script src="./assets/js/axios.min.js"></script>
@@ -31,27 +32,53 @@
       <div id="nav-area" class="container tall">   
 
         <div id="mural-vagas" class="nav-area-item active">
+          <div class="filters form-inline">
+            <div class="custom-control custom-checkbox mr-3">
+              <input type="checkbox" class="custom-control-input" id="filter-favoritos" v-model="filtrarFavoritos">
+              <label class="custom-control-label" for="filter-favoritos"> Favoritos</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="filter-candidaturas" v-model="filtrarCandidaturas">
+              <label class="custom-control-label" for="filter-candidaturas"> Candidaturas</label>
+            </div>
+          </div>
           <div class="vue-loading" v-if="loading">
             <i class="fa fa-spinner fa-spin"></i>
           </div>
-          <ul v-for="vaga in vagas" v-if="!errored">
-            <li><b>Empresa</b> {{ vaga.empresa }}</li>
-            <li><b>Vaga</b> {{ vaga.vaga }}</li>
-            <li><b>Postado em</b> {{ vaga.postado }}</li>
-            <li><a :href="`./vaga/${vaga.id}`" class="btn btn-primary">Ver mais</a></li>
-          </ul>
+          <div class="card mb-3" v-for="vaga in vagas" v-if="!loading">            
+            <div class="candidato" v-if="vaga.candidato">
+              <i class="fa fa-check-circle"></i>              
+            </div>
+            <div class="card-body">
+              <ul class="pb-0">              
+                <li><b>Empresa</b> {{ vaga.empresa }}</li>
+                <li><b>Vaga</b> {{ vaga.vaga }}</li>
+                <li><b>Postado em</b> {{ vaga.postado }}</li>
+                <li>
+                  <a :href="`./vaga.html?id=${vaga.id}`">
+                    <b>Mais detalhes</b>
+                  </a>
+                </li>              
+              </ul>
+            </div>
+            <button type="button" class="favorite favorite-ok" :data-id="vaga.id" v-if="vaga.favorito">
+              <i class='fa fa-star'></i> Adicionado aos favoritos
+            </button>
+            <button type="button" class="favorite" :data-id="vaga.id" v-else>
+              <i class="fa fa-star fa-pulse"></i> Adicionar aos favoritos
+            </button>
+          </div>
           <div class="alert alert-danger" v-if="errored">
             <p><i class="fa fa-error"></i> Ocorreu um erro ao carregar as vagas, por favor, tente novamente mais tarde. </p>
           </div>
 
-          <div class="text-center" v-if="vagas">
-            <div class="load-more">
+          <div class="mural-control text-center">
+            <div class="load-more" v-if="carregarMais">
               <button type="button" v-on:click="carregarVagas">
                 <i class="fa fa-plus"></i>
               </button>
               Carregar mais...
-            </div>
-            <div class="alert alert-info reached">Não existem mais vagas a serem exibidas.</div>
+            </div>            
           </div>
         </div>
 
@@ -60,7 +87,7 @@
             <i class="fa fa-spinner fa-spin"></i>
           </div>
           <ul v-for="aviso in avisos">
-            <div class="card">
+            <li class="card">
               <a :href="`./aviso.html?id=${ aviso.id }`" v-if="aviso.capa">
                 <img class="card-img-top" :src="`${ aviso.capa }`" alt="">
               </a>
@@ -86,36 +113,48 @@
                 <a :href="`./aviso.html?id=${ aviso.id }`" class="card-link">
                   Continuar lendo...
                 </a>        
-                <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>                  
-                <div class="jumbotron mt-2 p-1">
-                  <button href="" class="card-link">
-                    <i class="fa fa-share-alt"></i>
-                  </button>
-                  <button class="card-link">
-                    <i class="fa fa-star"></i>
-                  </button>
-                </div>  
+                <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>                                                   
               </div>
-            </div>
+              <button type="button" class="favorite favorite-ok" :data-id="aviso.id" v-if="aviso.favorito">
+                <i class='fa fa-check'></i> Adicionado aos favoritos
+              </button>
+              <button type="button" class="favorite" :data-id="aviso.id" v-else>
+                <i class="fa fa-star fa-pulse"></i> Adicionar aos favoritos
+              </button> 
+            </li>
           </ul>
-          <div class="text-center" v-if="avisos && !loading">
-            <div class="load-more">
+          <div class="mural-control text-center">
+            <div class="load-more" v-if="carregarMais">
               <button type="button" v-on:click="this.carregarAvisos">
                 <i class="fa fa-plus"></i>
               </button>
               Carregar mais...
-            </div>
-            <div class="alert alert-info reached">Não existem mais avisos a serem exibidos.</div>
+            </div>            
           </div>
         </div>
 
       </div>
     </section>    
 
-    <!-- VUE :: VAGAS APP -->
+    <footer class="load-me" data-src="./components/footer.html"></footer>
+
+    <script src="./assets/js/jquery.3.2.1.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/sweetalert.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+
     <script>
 
-      var vagasURL = './server/vagas.php';
+      var axiosConfig = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        }
+      };
+      
+      /* VUE :: VAGAS APP */
+      var vagasURL = base + 'server/vagas.php';
       var vagasApp = new Vue({
         el: '#mural-vagas',
         data () {
@@ -124,54 +163,83 @@
             vagas: null,
             loading: true,
             errored: false,
-            slice: 0
+            slice: 0,
+            filtrarFavoritos: false,
+            filtrarCandidaturas: false,
+            carregarMais: false
           }
         },
         methods: {
           carregarVagas: function() {      
-            var scrollHeight = $('#mural-vagas ul').length ? $('#mural-vagas .load-more').position().top : 0;                 
-            $('#mural-vagas')
-              .find('.load-more i')
-              .removeClass('fa-plus')
-              .addClass('fa-spinner fa-spin');
-            this.slice += 6;           
+            var scrollHeight = $('#mural-vagas ul').length ? $('#mural-vagas .mural-control').position().top : 0;
+            if (this.slice > 0) {                 
+              $('#mural-vagas')
+                .find('.load-more i')
+                .removeClass('fa-plus')
+                .addClass('fa-spinner fa-spin'); 
+            }                      
             axios
             .post(vagasURL, {
-              slice: this.slice
-            })
+              slice: this.slice,
+              filtrarFavoritos: this.filtrarFavoritos,
+              filtrarCandidaturas: this.filtrarCandidaturas
+            }, axiosConfig)
             .then(response => {
               this.info = response.data.vagas;
-              if (this.info.length < 6) {
-                $('#mural-vagas .load-more').remove();
-                $('#mural-vagas .reached').show();
+              this.carregarMais = this.info.length < 6 ? false : true;              
+              if (this.slice > 0) {
+                this.info.forEach(element => {
+                  this.vagas.push(element);
+                });
+              } else {
+                this.vagas = this.info;
               }
-              this.info.forEach(element => {
-                this.vagas.push(element);
-              });
+              this.errored = false;    
             })
             .catch(error => {
               console.log(error)
               this.errored = true
             })
             .finally(() => {
-              this.loading = false;              
-              $('#mural-vagas')
-                .find('.load-more i')
-                .removeClass('fa-spinner fa-spin')
-                .addClass('fa-plus');
-              $('html, body').animate({
-                scrollTop : scrollHeight + 60
-              }, 500);
+              this.loading = false; 
+              if (this.slice > 0) {
+                $('#mural-vagas')
+                  .find('.load-more i')
+                  .removeClass('fa-spinner fa-spin')
+                  .addClass('fa-plus');
+                $('html, body').animate({
+                  scrollTop : scrollHeight + 40
+                }, 500);
+              }              
+              this.slice += 6;
             })
+          }
+        },
+        watch: {
+          filtrarCandidaturas: function() {            
+            this.loading = true;
+            this.slice = 0;
+            this.carregarVagas();
+          },
+          filtrarFavoritos: function() {            
+            this.loading = true;
+            this.slice = 0;
+            this.carregarVagas();
           }
         },
         mounted () {
           axios
             .post(vagasURL, {
-              slice: this.slice
-            })
+              slice: this.slice,
+              filtrarFavoritos: this.filtrarFavoritos,
+              filtrarCandidaturas: this.filtrarFavoritos
+            }, axiosConfig)
             .then(response => {              
-              this.vagas = response.data.vagas;              
+              this.vagas = response.data.vagas; 
+              if (this.vagas < 6) {
+                this.carregarMais = false;                
+              }
+              this.errored = false;             
             })
             .catch(error => {
               console.log(error)
@@ -187,10 +255,8 @@
             })
         }
       });      
-    </script>
 
-    <!-- VUE :: AVISOS APP -->
-    <script>
+      /* VUE :: AVISOS APP */
       var carregarAvisos = "";
       var avisosURL = './server/avisos.php';
       var avisosApp = new Vue({
@@ -202,12 +268,13 @@
             loading: true,
             errored: false,
             slice: 0,
-            firstLoad: true,
+            firstLoad: true,   
+            carregarMais: false         
           }
         },
         methods: {
           carregarAvisos: function(e) {  
-            var scrollHeight = $('#mural-avisos ul').length ? $('#mural-avisos .load-more').position().top : 0;           
+            var scrollHeight = $('#mural-avisos ul').length ? $('#mural-avisos .mural-control').position().top : 0;           
             $('#mural-avisos')
               .find('.load-more i')
               .removeClass('fa-plus')
@@ -251,13 +318,5 @@
       });      
     </script>
     
-    <footer class="load-me" data-src="./components/footer.html"></footer>
-
-    <script src="./assets/js/jquery.3.2.1.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
-    <script src="./assets/js/main.js"></script>
-
-
   </body>
 </html>
