@@ -1,3 +1,8 @@
+var user = {
+  id : '',
+  nome : ''
+}
+
 var base = $('base').attr('href');
 
 function getUrlParameter(sParam) {
@@ -81,7 +86,7 @@ $(function() {
     /**
      * jQuery Masks
      */
-    /*
+    /* */
     var SPMaskBehavior = function(val) {
       return val.replace(/\D/g, "").length === 11 ?
         "(00) 00000-0000" :
@@ -95,14 +100,31 @@ $(function() {
     $(".cel-field").mask(SPMaskBehavior, spOptions);
     $('.tel-field').mask('(00) 0000-0000');
     $(".cpf-field").mask('000.000.000-00');
-    $(".cnpj-field").mask('00.000.000/0000-00');
-    $(".cep-field").mask('00000-000');
-    $('.cep-field').blur(function() {
-      var cep = $(this).val();
-      getAddress(cep, $(this).closest('fieldset'));
-    });
-    */
-
+    $(".cnpj-field").mask('00.000.000/0000-00');    
+    $(".date-field").mask('00/00/0000');    
+   $('.money').mask('#.##0,00', {reverse: true});    
+    
+   $.fn.etapas = function(direcao) {
+    var _t = this;
+    var active_index;
+    var etapas_length = _t.find('> div').length;
+    if (direcao == 'next') {
+        active_index = _t.find('> div.active').index();
+        console.log(active_index + " " + etapas_length);
+        if (active_index < (etapas_length - 1)) {
+            _t.find('> div.active').removeClass('active');
+            _t.find('> div').eq(active_index + 1).addClass('active');
+        }
+    }
+    if (direcao == 'prev') {
+        active_index = _t.find('> .active').index();
+        if (active_index > 0) {
+            _t.find('> div.active').removeClass('active');
+            _t.find('> div').eq(active_index - 1).addClass('active');
+        }
+    }
+    return true;
+  }
 
     /**
      * Set Sticky Header
@@ -249,6 +271,7 @@ $(function() {
      */
     if ($('#nav-component').length) {
       $(document).on('click', '#nav-component .nav-link', function() {
+        console.log('nav component click');
         var tab = $(this).data('tab');
         if ($(this).hasClass('active')) {
           return false;
@@ -400,7 +423,37 @@ $(function() {
           }
         }
         return state;
-      }, "Data inválida.");
+      }, "Data inválida");
+
+      
+      // Validator to check if a date is valid and not a future date
+      jQuery.validator.addMethod("testDate2", function(value, element) {
+        var state = false;
+        if ($(element).prop('required') === false && value.length === 0) {
+          state = true;
+        } else {
+          if (value.length != 10) {
+            return false;
+          } else {
+            var DateArr = value.split("/");
+            var day = DateArr[0];
+            var month = DateArr[1];
+            var year = DateArr[2];
+            if (month == '01' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; } else if (month == '02') {
+              if (leapYear(year)) {
+                if ((parseInt(day) > 0 && parseInt(day) <= 29)) {
+                  state = true;
+                }
+              } else {
+                if ((parseInt(day) > 0 && parseInt(day) <= 28)) {
+                  state = true;
+                }
+              }
+            } else if (month == '03' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; } else if (month == '04' && (parseInt(day) > 0 && parseInt(day) <= 30)) { state = true; } else if (month == '05' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; } else if (month == '06' && (parseInt(day) > 0 && parseInt(day) <= 30)) { state = true; } else if (month == '07' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; } else if (month == '08' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; } else if (month == '09' && (parseInt(day) > 0 && parseInt(day) <= 30)) { state = true; } else if (month == '10' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; } else if (month == '11' && (parseInt(day) > 0 && parseInt(day) <= 30)) { state = true; } else if (month == '12' && (parseInt(day) > 0 && parseInt(day) <= 31)) { state = true; }
+          }
+        }
+        return state;
+      }, "Data inválida");
 
       // Validator - changing default config for better highlights
       jQuery.validator.setDefaults({
@@ -426,6 +479,19 @@ $(function() {
           }
         });
       });
+
+      if ($('.see-password').length) {
+        $(document).on('click', '.see-password', function() {
+          let parent = $(this).closest('.form-group');
+          if ($(this).find('.fa').hasClass('fa-square-o')) {
+            $(this).find('.fa').removeClass('fa-square-o').addClass('fa-check-square');
+            parent.find('input').attr('type', 'text');
+          } else {
+            $(this).find('.fa').removeClass('fa-check-square').addClass('fa-square-o');
+            parent.find('input').attr('type', 'password');
+          }
+        });
+      }
 
     }
 
@@ -643,9 +709,10 @@ $(function() {
   /**
    * Adicionar um item aos favoritos
    */
-  $(document).on('click', '.favorite', function() {
+  $(document).on('click', '.favoritar', function() {
     var _t = $(this);
     var id = $(this).data('id');
+    if (!id) return false;
     var url = base + 'server/favoritar.php';
     $.ajax({
       url: url,
@@ -654,18 +721,18 @@ $(function() {
       dataType: "json",
       beforeSend: function() {
         _t.find('i.fa')
-          .removeClass('fa-star fa-pulse')
+          .removeClass('fa-star-o')
           .addClass('fa-refresh fa-spin');
-      },
-      complete: function() {
-        _t.find('i.fa')
-          .removeClass('fa-refresh fa-spin')
-          .addClass('fa-star fa-pulse');
       },
       success: function(res) {
         if (res.status == "success") {
-          _t.addClass('favorite-ok')
-            .html("<i class='fa fa-star'></i> Adicionado aos favoritos")
+          _t.removeClass("favoritar")
+            .addClass("active")
+            .html("<i class='fa fa-star'></i> Favorito");
+        } else {
+          _t.find('i.fa')
+          .removeClass('fa-refresh fa-spin')
+          .addClass('fa-star-o');
         }
         swal({
           icon : res.status,
@@ -674,6 +741,9 @@ $(function() {
         })
       },
       error: function() {
+        _t.find('i.fa')
+        .removeClass('fa-refresh fa-spin')
+        .addClass('fa-star-o');
         swal({
           icon : "error",
           title : "Erro",
@@ -686,30 +756,30 @@ $(function() {
   /**
    * Candidatar a uma vaga
    */
-  $(document).on('click', '.apply', function() {
+  $(document).on('click', '.candidatar', function() {
     var _t = $(this);
     var id = $(this).data('id');
+    if (!id) return false;
     var url = base + 'server/candidatar.php';
     $.ajax({
       url: url,
       data: "&id=" + id,
       method: "post",
       dataType: "json",
-      beforeSend: function() {
+      beforeSend: function() {        
         _t.find('i.fa')
-          .removeClass('fa-check-circle')
+          .removeClass('fa-circle-o')
           .addClass('fa-refresh fa-spin');
-      },
-      complete: function() {
-        _t.find('i.fa')
-          .removeClass('fa-refresh fa-spin')
-          .addClass('fa-check-circle');
       },
       success: function(res) {
         if (res.status == "success") {
-          _t.removeClass('btn-primary')
-            .addClass('btn-success');
-          _t.html("<i class='fa fa-check'></i> Você já está concorrendo a essa vaga")
+          _t.removeClass("candidatar")
+            .addClass("active")
+            .html("<i class='fa fa-check-circle'></i> Concorrendo");
+        } else {
+          _t.find('i.fa')
+          .removeClass('fa-refresh fa-spin')
+          .addClass('fa-circle-o');
         }
         swal({
           icon : res.status,
@@ -718,6 +788,9 @@ $(function() {
         });
       },
       error: function() {
+        _t.find('i.fa')
+          .removeClass('fa-refresh fa-spin')
+          .addClass('fa-circle-o');
         swal({
           icon : "error",
           title : "Erro",

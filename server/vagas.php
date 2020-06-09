@@ -16,7 +16,7 @@
     }
 
     if ($filtrar_favoritos && $filtrar_candidaturas) {
-        echo file_get_contents('json/vagas_todas.json');
+        echo file_get_contents('json/vagas_filtradas.json');
         sleep(1);
         exit;
     }

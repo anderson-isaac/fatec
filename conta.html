@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+
+  <title>Mural FATEC </title>
+  <base href="http://localhost/fatec/"/>
+  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <link rel="stylesheet" href="assets/css/sweetalert.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/axios.min.js"></script>
+</head>
+
+<body>
+
+  <header class="load-me" data-src="components/header.html"></header>
+
+  <div id="minha-conta" class="page-section">
+    <nav class="app-nav">
+        <a href="mural.html">
+          <i class="fa fa-chevron-left"></i>
+        </a>
+        <b>Minha Conta</b>
+      </nav>
+    <section class="container">
+      <div class="tall">
+        <div class="row mt-5">
+          <div class="col-12 col-md-6">
+            <form id="conta-form" action="" autocomplete="off" class="form-validate">
+              <h5>Dados pessoais</h5>
+              <div class="alert alert-error" style="display: none;"></div>
+              <div class="form-group">
+                <label>Nome</label>
+                <input type="text" name="Nome" class="form-control" disabled="disabled" :value="info.nome" autocomplete="name" required="required">
+              </div>
+              <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" name="Email" class="form-control" disabled="disabled" :value="info.email" autocomplete="email" required="required">
+              </div>
+              <div class="form-group">
+                <label>Celular</label>
+                <input type="tel" name="Telefone" class="form-control" disabled="disabled" :value="info.telefone" autocomplete="phone" required="required">
+              </div>
+              <div class="form-group">
+                <label>Seu currículo </label>                
+                <a :href="info.curriculo" class="btn btn-light" download="download">
+                  <i class="fa fa-download"></i> Baixar
+                </a>                
+              </div>
+              <div class="form-group">
+                <label>Atualizar Currículo</label>
+                <input type="file" name="Curriculo" class="form-control" disabled="disabled" accept="application/pdf">
+                <small>Utilizar formato PDF</small>
+              </div>
+              <div class="form-group buttons">
+                <div>
+                  <button id="editar" type="button" class="btn btn-secondary"><i class="fa fa-edit"></i> Editar</button>
+                </div>
+                <div style="display: none;">
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> Salvar</button>
+                  <button id="cancelar" type="button" class="btn btn-secondary mt-2"><i class="fa fa-times"></i> Cancelar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-12 col-md-4 mt-5 mt-md-0">
+            <div class="surface">
+              <form id="senha-form" class="form-validate">
+                <h5>Alterar Senha</h5>
+                <div class="alert alert-error" style="display: none;"></div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label>Senha Atual</label>
+                    <input type="password" name="Senha_atual" class="form-control" required="required">
+                    <div class="see-password"><i class="fa fa-square-o"></i> Mostrar senha</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label>Senha Nova</label>
+                    <input type="password" name="Senha_nova" class="form-control" required="required">
+                    <div class="see-password"><i class="fa fa-square-o"></i> Mostrar senha</div>
+                  </div> 
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                      Atualizar
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>        
+      </div>
+    </section>
+  </div>
+
+  <footer class="load-me" data-src="components/footer.html"></footer>
+
+  <script src="assets/js/jquery.3.2.1.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/sweetalert.min.js"></script>
+  <script src="assets/js/jquery.mask.js"></script>
+  <script src="assets/js/jquery.validate.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+
+    $(function() {
+
+        $(document).on('click', '#editar', function() {
+            $(this).closest('.buttons').find('> div').toggle();
+            $(this).closest('form').find('[disabled]').prop('disabled', false).addClass('disable-me');
+        });
+
+        $(document).on('click', '#cancelar', function() {
+            $(this).closest('.buttons').find('> div').toggle();
+            $(this).closest('form').find('.disable-me').prop('disabled', true).removeClass('disable-me');
+        });
+
+        $(document).on('submit', '#conta-form', function(e) {
+          e.preventDefault();
+          var _t = $(this);
+          var submit_button = $(this).find('button:submit');
+          _t.find('.alert').hide();
+          $.ajax({
+            url: 'server/set-conta.php',
+            type: 'post',
+            dataType: 'json',
+            data: _t.serializeArray(),
+            beforeSend: function() {
+              submit_button.html("<i class='fa fa-refresh fa-spin'></i>");
+              _t.find('.alert').html('').removeClass('alert-error');
+            },
+            success: function(json) {
+              if (json.status == '1') {
+                _t.find('.button > div').toggle();
+                _t.find('.disable-me').prop('disabled', true).removeClass('disable-me');
+              } else {
+                _t.find('.alert').html(json.erro).show();
+                return false;
+              }
+              submit_button.html("<i class='fa fa-save'></i> Salvar");
+              $('#cancelar').trigger("click");
+            },
+            error: function() {
+              submit_button.html("<i class='fa fa-save'></i> Salvar");
+              _t.find('.alert').html('Ocorreu um erro inesperado').show();
+            }
+          });
+        });
+
+        $(document).on('submit', '#conta-form', function(e) {
+          e.preventDefault();
+          var _t = $(this);
+          var submit_button = $(this).find('button:submit');
+          _t.find('.alert').hide();
+          $.ajax({
+            url: 'server/set-password.php',
+            type: 'post',
+            dataType: 'json',
+            data: _t.serializeArray(),
+            beforeSend: function() {
+              submit_button.html("<i class='fa fa-refresh fa-spin'></i>");
+              _t.find('.alert').html('').removeClass('alert-error');
+            },
+            success: function(json) {
+              if (json.status == '1') {
+                _t.find('.button > div').toggle();
+                _t.find('.disable-me').prop('disabled', true).removeClass('disable-me');
+              } else {
+                _t.find('.alert').html(json.erro).show();
+                return false;
+              }
+              submit_button.html("<i class='material-icons'>save</i> Salvar");
+            },
+            error: function() {
+              submit_button.html("<i class='material-icons'>save</i> Salvar");
+              _t.find('.alert').html('Ocorreu um erro inesperado').show();
+            }
+          });
+        });
+
+    });
+
+    window.onload = function() {
+        new Vue({
+            el: '#minha-conta',
+            data () {
+                return {
+                    info: '',
+                    errored: false,
+                    errorMessage: 'Desculpe, ocorreu um erro ao tentar acessar seus dados.'
+                }
+            },
+            mounted () {
+                axios
+                    .get('server/get-conta.php')
+                    .then(response => (this.info = response.data ))
+                    .catch(error => {
+                    this.errorMessage = error;
+                    this.errored = true;
+                }).finally(() => {
+                    $('.vue-loading').find('i.material-icons').remove();
+                    $('.vue-loading').removeClass('vue-loading');
+                    var SPMaskBehavior = function(val) {
+                    return val.replace(/\D/g, "").length === 11 ?
+                        "(00) 00000-0000" :
+                        "(00) 0000-00009";
+                    },
+                    spOptions = {
+                        onKeyPress: function(val, e, field, options) {
+                        field.mask(SPMaskBehavior.apply({}, arguments), options);
+                        }
+                    };
+                    $("[type=\"tel\"]").mask(SPMaskBehavior, spOptions);
+                    $('.loader').fadeOut();
+                });
+            }
+        });
+    }
+  </script>
+
+</body>
+
+</html>

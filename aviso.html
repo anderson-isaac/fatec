@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+
+  <title>Mural FATEC </title>
+  <base href="http://localhost/fatec/"/>
+  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <link rel="stylesheet" href="assets/css/sweetalert.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/axios.min.js"></script>
+</head>
+
+<body>
+
+  <header class="load-me" data-src="components/header.html"></header>
+
+  <section id="aviso" class="page-section">
+    <nav class="app-nav">
+      <a :href="`mural.html?tab=1&scrolltop=${ previousPageScrolltop }`">
+        <i class="fa fa-chevron-left"></i>
+      </a>
+      <b>Voltar</b>
+    </nav>
+    <div class="container tall">      
+      <div class="vue-loading" v-if="loading">
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
+      <div class="card" v-if="aviso && !loading">
+        <img class="card-img-top" :src="`${ aviso.capa }`" alt="">          
+        <div class="card-body">
+          <h5 class="card-title">
+            <div class="author">                
+              <a :href="`professor.html?id=${ aviso.autor }`">
+                <img :src="`${ aviso.autor_foto }`" alt="" class="profile-photo">
+              </a>
+              <small>
+                <a :href="`professor.html?id=${aviso.autor}`">
+                  {{ aviso.autor_nome }}
+                </a>
+              </small>
+            </div>
+            {{ aviso.titulo }}
+          </h5>
+          <p class="card-text">
+            {{ aviso.texto }}
+          </p>
+          <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>
+        </div>
+        <div class="btn-group">
+
+          <!-- FAVORITAR -- START -->
+          <button type="button" class="btn btn-flat active" v-if="aviso.favorito">
+            <i class="fa fa-star"></i>
+            Favorito
+          </button>
+          <button type="button" class="favoritar btn btn-flat" :data-id="id" v-else>
+            <i class="fa fa-star-o"></i>
+            Favoritar
+          </button>
+          <!-- FAVORITAR -- END -->
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="load-me" data-src="components/footer.html"></footer>
+
+  <script src="assets/js/jquery.3.2.1.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/sweetalert.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+
+    var avisoURL = base + 'server/aviso.php'
+        avisoId = getUrlParameter('id'),
+        prevScrollTop = getUrlParameter('scrolltop');
+    var avisoApp = new Vue({
+      el: '#aviso',
+      data() {
+        return {
+          aviso: null,
+          loading: true,
+          errored: false,
+          id: avisoId,
+          previousPageScrolltop: prevScrollTop ? prevScrollTop : 0
+        }
+      },
+      mounted() {
+        axios
+          .post(avisoURL, {
+            id: this.id
+          })
+          .then(response => {
+            this.aviso = response.data;
+          })
+          .catch(error => {
+            console.log(error)
+            this.errored = true
+          })
+          .finally(() => {
+            this.loading = false;
+          })
+      }
+    });      
+  </script>
+
+</body>
+
+</html>

@@ -9,24 +9,25 @@
 
 
     <title>Mural FATEC </title>
-    <base href="./"/>
+    <base href="http://localhost/fatec/"/>
+    <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./assets/css/normalize.css">  
-    <link rel="stylesheet" href="./assets/css/sweetalert.css">      
-    <link rel="stylesheet" href="./assets/css/styles.css">
-    <script src="./assets/js/vue.min.js"></script>
-    <script src="./assets/js/axios.min.js"></script>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/normalize.css">  
+    <link rel="stylesheet" href="assets/css/sweetalert.css">      
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/vue.min.js"></script>
+    <script src="assets/js/axios.min.js"></script>
   </head>
 
   <body>
 
-    <header class="load-me" data-src="./components/header.html"></header>
+    <header class="load-me" data-src="components/header.html"></header>
     
     <section class="page-section">
         <nav class="app-nav">
-            <a href="./mural.html">
+            <a href="`mural.html?tab=0&scrolltop=${ previousPageScrolltop }`">
                 <i class="fa fa-chevron-left"></i>
             </a>        
             <b>Voltar</b>    
@@ -62,50 +63,64 @@
                         <p class="card-text">
                             {{ vaga.descricao }}
                         </p>
-                        <button type="button" class="apply btn btn-success btn-full mt-3" :data-id="vaga.id" v-if="vaga.candidato">
+                        <button type="button" class="candidatar btn btn-success btn-full mt-3" :data-id="vaga.id" v-if="vaga.candidato">
                             <i class="fa fa-check"></i> 
                             Você já está concorrendo a essa vaga
                         </button>
-                        <button type="button" class="apply btn btn-primary btn-full mt-3" :data-id="vaga.id" v-else>
-                            <i class="fa fa-check-circle"></i> 
-                            Quero me candidatar
-                        </button>
-                        <hr>
                         <h5 class="card-title">                    
                             <div class="author">
                                 <img :src="vaga.autor_foto" alt="" class="profile-photo">
                                 <small>
-                                    <a :href="`./professor.html?id=${ vaga.autor_id }`">
+                                    <a :href="`professor.html?id=${ vaga.autor_id }`">
                                         {{ vaga.autor_nome }}
                                     </a>
                                 </small>
                             </div>                        
                         </h5>                
                     </div>
-                    <button type="button" class="favorite favorite-ok" :data-id="vaga.id" v-if="vaga.favorito">
-                        <i class='fa fa-check'></i> Adicionado aos favoritos
-                    </button>
-                    <button type="button" class="favorite" :data-id="vaga.id" v-else>
-                        <i class="fa fa-star fa-pulse"></i> Adicionar aos favoritos
-                    </button>             
+                    <div class="btn-group">
+
+                        <!-- FAVORITAR -- START -->
+                        <button type="button" class="btn btn-flat active" :data-id="vaga.id" v-if="vaga.favorito">
+                          <i class="fa fa-star"></i>
+                          Favorito
+                        </button>
+                        <button type="button" class="favoritar btn btn-flat" :data-id="vaga.id" v-else>
+                          <i class="fa fa-star-o"></i>
+                          Favoritar
+                        </button>
+                        <!-- FAVORITAR -- END -->
+          
+                        <!-- Cadastrar à vaga -- START -->
+                        <button type="button" class="btn btn-flat active" v-if="vaga.candidato">
+                          <i class="fa fa-check-circle"></i>
+                          Concorrendo
+                        </button>
+                        <button type="button" class="candidatar btn btn-flat" :data-id="vaga.id" v-else>
+                          <i class="fa fa-circle-o"></i>
+                          Candidatar
+                        </button>
+                        <!-- Cadastrar à vaga -- END -->
+          
+                      </div>
                 </div>
             </div>
         </div>
     </section>    
         
-    <footer class="load-me" data-src="./components/footer.html"></footer>
+    <footer class="load-me" data-src="components/footer.html"></footer>
 
-    <script src="./assets/js/jquery.3.2.1.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
-    <script src="./assets/js/sweetalert.min.js"></script>
-    <script src="./assets/js/main.js"></script>
-
-    <!-- VUE :: VAGAS APP -->
+    <script src="assets/js/jquery.3.2.1.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/sweetalert.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    
     <script>
-
-      var vagasURL = './server/vaga.php';
-      var vagasApp = new Vue({
+      
+      var prevScrollTop = getUrlParameter('scrolltop');
+      var vagaURL = base + 'server/vaga.php';
+      var vagaApp = new Vue({
         el: '#vaga',
         data () {
           return {    
@@ -113,12 +128,13 @@
             loading: true,
             errored: false,
             candidato_class: '',
-            id: getUrlParameter('id')
+            id: getUrlParameter('id'),
+            previousPageScrolltop: prevScrollTop ? prevScrollTop : 0
           }
         },
         mounted () {
           axios
-            .post(vagasURL, {
+            .post(vagaURL, {
               id: this.id
             })
             .then(response => {              

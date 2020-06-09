@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+
+  <title>Mural FATEC </title>
+  <base href="http://localhost/fatec/"/>
+  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <link rel="stylesheet" href="assets/css/sweetalert.css">
+  <link rel="stylesheet" href="assets/css/datatables.min.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/axios.min.js"></script>
+</head>
+
+<body>
+
+  <header class="load-me" data-src="components/header.html"></header>
+
+  <div id="index-professor" class="page-section">
+    <section class="container-fluid">
+      <div class="tall">
+
+        <div class="row mt-5">
+          <div class="col-12 col-md-6">
+            <div class="surface mt-5">
+              <h4>Vagas</h4><br>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#vaga-modal">
+                <i class="fa fa-plus"></i> Novo
+              </button>
+
+              <hr>
+
+              <table id="table-vagas" class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Título</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="surface mt-5">
+              <h4>Avisos</h4><br>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#aviso-modal">
+                <i class="fa fa-plus"></i> Novo
+              </button>
+
+              <hr>
+              
+              <table id="table-avisos" class="table">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Aulas de amanhã 20/06/2020 </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn btn-danger delete-this">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <button class="btn btn-info edit-this">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Aulas de amanhã 20/06/2020 </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn btn-danger delete-this">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <button class="btn btn-info edit-this">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Aulas de amanhã 20/06/2020 </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn btn-danger delete-this">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <button class="btn btn-info edit-this">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Aulas de amanhã 20/06/2020 </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn btn-danger delete-this">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <button class="btn btn-info edit-this">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <footer class="load-me" data-src="components/footer.html"></footer>
+
+  <div class="modal" id="vaga-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Nova Vaga</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <form id="form-vaga">
+          <!-- Modal body -->
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label>Descrição</label>
+              <textarea name="Descricao" id="" rows="7" class="form-control" required="required"></textarea>
+              <small>Breve descrição da vaga</small>
+            </div>
+
+            <div class="form-group">
+              <label>Cargo</label>
+              <select name="Cargo" class="form-control" required="required"></select>
+              <a href="#novo-cargo" data-toggle="collapse">Adicionar novo cargo</a>
+              <div class="collapse jumbotron p-3 pt-4 mt-3" id="novo-cargo">                
+                <div class="form-group pb-0 mb-0">
+                  <input id="Novo_cargo" name="Novo_cargo" type="text" class="form-control mb-2" placeholder="Digite o nome do cargo" disabled="disabled">
+                  <button id="add-cargo" class="btn btn-outline-secondary" type="button">Adicionar</button>                  
+                </div>                
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Tipo</label>
+              <select name="Tipo" class="form-control" data-toggle="select" data-target="#tipo-toggle">
+                <option value="0" selected>Estágio</option>
+                <option value="1">Emprego</option>
+              </select>
+            </div>
+
+            <div id="tipo-toggle" class="toggle-area">
+              <div class="form-group active" data-value="0">
+                <label>Valor da bolsa</label>
+                <input type="text" name="Valor_da_bolsa" class="form-control money">
+              </div>
+              <div class="form-group" data-value="1">
+                <label>Remuneração</label>
+                <input type="text" name="Remuneracao" class="form-control money" disabled="disabled">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Diferencial</label>
+              <textarea name="Diferencial" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Benefícios</label>
+              <textarea name="Beneficios" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Empresa</label>
+              <select name="Empresa" class="form-control" required="required"></select>
+              <a href="#nova-empresa" data-toggle="collapse">Adicionar nova empresa</a>
+              <div class="collapse jumbotron p-3 pt-4 mt-3" id="nova-empresa">                
+                <div class="form-group pb-0 mb-0">
+                  <input id="Nova_empresa" name="Nova_empresa" type="text" class="form-control mb-2" placeholder="Digite o nome do empresa" disabled="disabled">
+                  <button id="add-empresa" class="btn btn-outline-secondary" type="button">Adicionar</button>                  
+                </div>                
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" name="Email" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label>Whatsapp</label>
+              <input type="text" name="Whatsapp" class="form-control cel-field">
+            </div>
+
+            <div class="form-group">
+              <label>Situação da vaga</label>
+              <select name="Situacao" id="" class="form-control">
+                <option value="0">Fechada</option>
+                <option value="1" selected>Em aberto</option>
+                <option value="3">Suspensa</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Data da postagem</label>
+              <input type="text" name="Data_da_postagem" class="form-control date-field">
+            </div>
+
+            <div class="form-group">
+              <label>Prazo de validade</label>
+              <input type="text" name="Prazo_de_validade" class="form-control date-field">
+            </div>
+
+
+
+          </div>
+          
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal" id="aviso-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Novo Aviso</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <form id="form-aviso">
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Título</label>
+              <input type="text" name="Titulo" class="form-control" required="required">
+            </div>
+            <div class="form-group">
+              <label>Texto</label>
+              <textarea name="Texto" rows="10" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Capa atual</label>
+              <img src="https://picsum.photos/600/400" class="img-fluid" alt="">
+            </div>
+            <div class="form-group">
+              <label>Imagem de capa</label>
+              <input type="file" name="Capa"><br>
+              <small>Tam. recomendado 600x400px</small>
+            </div>
+          </div>
+          
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">Enviar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery.3.2.1.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/sweetalert.min.js"></script>
+  <script src="assets/js/jquery.mask.js"></script>
+  <script src="assets/js/jquery.validate.js"></script>
+  <script src="assets/js/datatables.min.js"></script>  
+  <script src="assets/js/main.js"></script>
+
+  <script>
+
+    var table_vagas, table_avisos;
+
+    $(function() {
+
+      // Misc
+      $(document).on('change', '[data-toggle=\"select\"]', function() {
+        let _t = $(this);
+        let area = _t.data('target');
+        let item = _t.val();
+        $(area).find('[data-value]').removeClass('active');
+        $(area).find('[data-value] input').prop('disabled', true);
+        $(area).find('[data-value=\"' + item + '\"]').addClass('active');
+        $(area).find('[data-value=\"' + item + '\"] input').prop("disabled", false);
+      })
+
+      /** VAGA **/
+
+      // Get cargos
+      $.ajax({
+        url : base + 'server/admin/get-cargos.php',
+        type : 'post',
+        dataType : 'json',
+        success : function(res) {
+          res.cargos.forEach(function(item, index) {
+            let opt = document.createElement('OPTION');
+                opt.innerHTML = item.cargo;
+                opt.value = item.cargo_id;
+            $("#form-vaga [name='Cargo']")[0].appendChild(opt);
+          });
+        }
+      });
+
+      // Get empresas
+      $.ajax({
+        url : base + 'server/admin/get-empresas.php',
+        type : 'post',
+        dataType : 'json',
+        success : function(res) {
+          res.empresas.forEach(function(item, index) {
+            let opt = document.createElement('OPTION');
+                opt.innerHTML = item.empresa;
+                opt.value = item.empresa_id;
+            $("#form-vaga [name='Empresa']")[0].appendChild(opt);
+          });
+        }
+      })
+
+
+      // Collapse novo cargo
+      $(document).on('shown.bs.collapse', '#novo-cargo', function () {        
+        $('#Novo_cargo').prop('disabled', false);
+      });
+
+      $(document).on('hidden.bs.collapse', '#novo-cargo', function () {
+        $('#Novo_cargo').prop('disabled', true);
+      });
+
+      $(document).on('click', '#add-cargo', function() {
+        let _t =  $(this);
+        let _btn = _t.html();
+        let cargo = $('#Novo_cargo').val();
+        if (cargo) {
+          $.ajax({
+            url : base + 'server/admin/add-cargo.php',
+            type : 'post',
+            dataType : 'json',
+            data : {
+              Novo_cargo : cargo
+            },
+            beforeSend : function() {
+              _t.width(_t.width()).html("<i class='fa fa-refresh fa-spin'></i>");
+            },
+            complete : function() {
+              _t.html(_btn);
+            },
+            success : function(res) {
+              if (res.status == 'success') {
+                let opt = document.createElement('OPTION');
+                    opt.value = res.cargo_id;
+                    opt.innerHTML = res.cargo;
+                $('select[name=\"Cargo\"]')[0].append(opt);
+                $('select[name=\"Cargo\"]').val(res.cargo_id);
+                $('#Novo_cargo').val('');
+                $('#novo-cargo').collapse('hide');
+              }
+            }
+          })
+        }
+      });
+
+      // Collapse nova empresa
+      $(document).on('shown.bs.collapse', '#nova-empresa', function () {        
+        $('#Nova_empresa').prop('disabled', false);
+      });
+
+      $(document).on('hidden.bs.collapse', '#nova-empresa', function () {
+        $('#Nova_empresa').prop('disabled', true);
+      });
+
+      $(document).on('click', '#add-empresa', function() {
+        let _t =  $(this);
+        let _btn = _t.html();
+        let empresa = $('#Nova_empresa').val();
+        if (empresa) {
+          $.ajax({
+            url : base + 'server/admin/add-empresa.php',
+            type : 'post',
+            dataType : 'json',
+            data : {
+              Nova_empresa : empresa
+            },
+            beforeSend : function() {
+              _t.width(_t.width()).html("<i class='fa fa-refresh fa-spin'></i>");
+            },
+            complete : function() {
+              _t.html(_btn);
+            },
+            success : function(res) {
+              if (res.status == 'success') {
+                let opt = document.createElement('OPTION');
+                    opt.value = res.empresa_id;
+                    opt.innerHTML = res.empresa;
+                $('select[name=\"Empresa\"]')[0].append(opt);
+                $('select[name=\"Empresa\"]').val(res.empresa_id);
+                $('#Nova_empresa').val('');
+                $('#nova-empresa').collapse('hide');
+              }
+            }
+          })
+        }
+      });
+
+      $('#vaga-modal').on('shown.bs.modal', function (e) {
+        $('#form-vaga').validate({
+          rules : {
+            Data_da_postagem : {
+              testDate2 : true
+            },
+            Prazo_de_validade : {
+              testDate2 : true
+            }
+          }
+        });
+      });
+
+      $('#vaga-modal').on('hide.bs.modal', function (e) {
+        $('#form-vaga')[0].reset();
+        $('#novo-cargo').collapse('hide');
+      });
+
+      table_vagas = $('#table-vagas').DataTable({
+        responsive : true,
+        "paging" : false,
+        "ordering" : false,
+        "info" : false,
+        "searching" : false,
+        "bFilter" : false,
+        "language": {
+          "url": base + "assets/js/Portuguese-Brasil.json"
+        },
+        processing: true,
+        serverSide: true,
+        ajax : {
+          url : base + "server/admin/get-vagas.php",
+          type : "post",
+          data : function(e) {
+            console.log(e);
+          }
+        },
+        columns : [              
+          { "data" : "Id_vaga", "visible" : false },
+          { "data" : "Titulo" },
+          { "data" : "Acoes" }
+        ],
+      });
+
+      $(document).on('click', '#table-vagas .delete-this', function() {
+        let _t = $(this);
+        let id_vaga = _t.data('id');
+        swal({
+          title: "Tem certeza?",
+          text: "Essa operação não poderá ser desfeita!",
+          icon: "warning",
+          buttons: [
+            'Não',
+            'Sim'
+          ],
+          dangerMode: true,
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            $.ajax({
+              url: base + 'server/admin/excluir-vaga.php',
+                data : { Id_vaga : id_vaga },
+                type : 'post',
+                success : function(res) {
+                  if (res.status == 'success') {
+                    swal({
+                      title: 'Sucesso!',
+                      text: 'A vaga foi excluída',
+                      icon: 'success'
+                    }).then(function() {
+                      table_vagas.ajax.reload();
+                    });
+                  }
+                },
+                error : function() {
+                  swal({
+                    title : 'Erro',
+                    text : 'Não foi possível concluir a operação nesse momento.',
+                    icon : 'error' 
+                  })
+                },
+              });
+            
+          }
+        });
+      });
+
+      
+      $(document).on('click', '#table-vagas .edit-this', function() {
+        let _t = $(this);
+        let id_vaga = _t.data('id');
+        let _btn = _t.html();
+        $.ajax({
+          url: base + 'server/admin/get-vaga.php',
+          data : { Id_vaga : id_vaga },
+          type : 'post',
+          beforeSend : function() {
+            _t.html("<i class='fa fa-refresh fa-spin'></i>");
+          },
+          complete: function() {
+            _t.html(_btn);
+          },
+          success : function(res) {
+            $("#form-vaga [name='Descricao']").val(res.descricao);
+            $("#form-vaga [name='Tipo']").val(res.tipo);
+            $("#form-vaga [name='Valor_da_bolsa']").val(res.bolsa);
+            $("#form-vaga [name='Remuneracao']").val(res.remuneracao);
+            $("#form-vaga [name='Diferencial']").val(res.diferencial);
+            $("#form-vaga [name='Beneficios']").val(res.beneficios);
+            $("#form-vaga [name='Email']").val(res.email);
+            $("#form-vaga [name='Whatsapp']").val(res.whatsapp);
+            $("#form-vaga [name='Situacao']").val(res.situacao);
+            $("#form-vaga [name='Data_da_postagem']").val(res.data_postagem);
+            $("#form-vaga [name='Prazo_de_validade']").val(res.prazo_validade);            
+            $('#vaga-modal').modal("show");
+          }
+        });
+      });
+
+      table_avisos = $('#table-avisos').DataTable({
+        responsive : true,
+        "paging" : false,
+        "ordering" : false,
+        "info" : false,
+        "searching" : false,
+        "bFilter" : false,
+        "language": {
+          "url": base + "assets/js/Portuguese-Brasil.json"
+        }
+      });
+
+
+      // Aviso
+
+
+    });
+    
+  </script>
+
+</body>
+
+</html>

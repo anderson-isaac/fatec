@@ -8,15 +8,15 @@
     "sInfoPostFix": "",
     "sInfoThousands": ".",
     "sLengthMenu": "_MENU_ resultados por página",
-    "sLoadingRecords": "<i class='material-icons rotate'>sync</i.",
-    "sProcessing": "<i class='material-icons rotate'>sync</i.",
+    "sLoadingRecords": "<i class='fa fa-refresh fa-spin'></i>",
+    "sProcessing": "<i class='fa fa-refresh fa-spin'></i>",
     "sZeroRecords": "Nenhum registro encontrado",
-    "sSearch": "<i class='material-icons'>search</i>",
+    "sSearch": "<i class='fa fa-search'></i>",
     "oPaginate": {
-        "sNext": "<i class='material-icons'>keyboard_arrow_right</i>",
-        "sPrevious": "<i class='material-icons'>keyboard_arrow_left</i>",
-        "sFirst": "<i class='material-icons'>first_page</i>",
-        "sLast": "<i class='material-icons'>last_page</i>"
+        "sNext": "<i class='fa fa-arrow-right'></i>",
+        "sPrevious": "<i class='fa fa-arrow-left'></i>",
+        "sFirst": "<i class='fa fa-double-arrow-right'></i>",
+        "sLast": "<i class='fa fa-double-arrow-right'></i>"
     },
     "oAria": {
         "sSortAscending": ": Ordenar colunas de forma ascendente",

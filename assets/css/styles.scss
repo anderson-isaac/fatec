@@ -1,4 +1,4 @@
-$url : '../';
+$url : 'http://desenvolvimentomw.com.br/anderson/tests/';
 
 @import "./theme.scss";
 @import "./bootstrap/bootstrap.scss";
@@ -37,16 +37,16 @@ h1, h2, h3, label, strong, b {
 label {
   position: relative;
   &.error {
+    display: inline-block;
     font-size: 12px;
+    margin-top: 2px;
     font-weight: normal;
-    position: absolute;
+    position: relative;
     padding: 2px 7px;
-    left: 7px;
-    top: 100%;
     background-color: $error;
     color: #fff;
-    @include translateY(7px);
-    @include border-radius(0 7px 7px 7px);
+    width: auto;    
+    @include border-radius(3px);
   }
 }
 hr {
@@ -58,23 +58,60 @@ hr {
 .link-to {
   cursor: pointer;
 }
-.surface {
-  margin-top: 15px;
+.surface {  
   padding: 15px;
   background-color: #fff;
-  @include border-radius(7px);
-  @include box-shadow(0 10px 15px rgba(0,0,0,0.3));
+  @include border-radius(5px);
+  @include box-shadow(0 5px 7px rgba(0,0,0,0.15));
+  h4 {
+    color: $primary; 
+    font-size: 18px;
+    font-weight: bold;
+    width: auto;
+    display: inline-block;
+    margin: 15px 0;
+    position: relative;
+    &:after{
+      content: "";
+      display: block;
+      height: 1px;
+      width: 50px;
+      background-color: $gray;
+      position: absolute;
+      top: 50%;
+      right: -65px;
+      @include translateY(-50%);
+    }
+  }
 }
 button {
   cursor: pointer;
 }
-
+.logo-login {
+  display: block;
+  margin: 0 auto;
+  max-width: 100px;
+}
+.toggle-area {
+  .form-group {
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
+}
+.table.dataTable {
+  td, th {
+    vertical-align: middle;
+    color: $dark !important;
+  }
+}
 
 /*==========*/
 /*  HEADER  */
 /*==========*/
 header {
-  background-color: transparent;
+  background-color: $primary;
   position: fixed;
   left: 0;
   top: 0;
@@ -184,7 +221,7 @@ header {
     @include border-radius(50%);
     i.fa {
       font-size: 24px;
-      color: darken($primary, 25%);
+      color: rgba(#fff, 75%);
     }
     &:hover, &:focus, &:active {
       background-color: transparent;
@@ -210,6 +247,7 @@ header {
     }
     &:before, &:after {
       top: 0.17rem;
+      left: 0;
     }
   }
 }
@@ -265,8 +303,9 @@ header {
     }
   }
   &.btn-light {
-    background-color: $light;
+    background-color: #fff;
     color: #333;
+    @include box-shadow(0 5px 5px rgba(0,0,0,0.15));
     &:hover, &:focus, &:active {
       color: #333;
       background-color: darken($light, 10%);
@@ -282,17 +321,6 @@ header {
     width: 100%;
     text-align: center;
   }  
-  &.apply {
-    font-size: 12px !important;
-    width: 100%;
-    text-align: center;
-    i.fa {
-      color: #fff;
-    }
-    &.btn-success {
-      pointer-events: none;
-    }
-  }
 }
 .legendas {
   display: block;
@@ -344,31 +372,28 @@ header {
     }
   }
 }
-
 .table.dataTable, .dataTables_wrapper {
-  width: 100%;
+  width: 100% !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  thead {
-    opacity: 0;
+  thead {    
     &.done-loading {
       opacity: 1;
     }
     th {
-      color: $primary;
-
+      color: $dark;
     }
   }
   tbody {
     background-color: rgba($primary, 5%);
     td {
-      color: #fff;
+      color: $dark;
       &:first-of-type:before {
         background-color: $primary !important;
         border: none !important;
-        color: $secondary !important;
+        color: #fff !important;
         font-weight: bold;
-        font-size: 18px !important;
+        font-size: 14px !important;
         top: 50% !important;
         left: 0 !important;
         @include translateY(-50%);
@@ -379,7 +404,7 @@ header {
         display: none;
         background-color: $primary ;
         border: none;
-        color: $secondary;
+        color: #fff;
         font-weight: bold;
         font-size: 18px;
         position: absolute;
@@ -506,7 +531,14 @@ header {
   background-color: transparent;
   border: none;
 }
-
+.see-password {
+  &:hover {
+    cursor: pointer;
+  }
+  i.fa {
+    @include translateY(0);
+  }
+}
 #fatec-btn {
   position: fixed;
   bottom: 10px;
@@ -603,8 +635,9 @@ header {
   }
 }
 .form-control:disabled, .form-control[readonly] {
-  background-color: rgba($primary, 25%);
-  opacity: 0.5;
+  background-color: darken($light, 5%);
+  border-color: darken($gray, 15%);
+  opacity: 0.8;
 }
 select.form-control {
   option {
@@ -624,29 +657,6 @@ select.form-control {
 .page-section {
   margin-top: 85px;
   z-index: 900;
-}
-.load-more {
-  display: block;
-  position: relative;
-  text-align: center;
-  font-size: 10px;
-  font-weight: bold;
-  width: 100%;
-  button {
-    display: block;
-    background-color: $secondary;
-    border: 5px solid lighten($secondary, 10%);
-    margin: 0 auto 5px;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    line-height: 42px;
-    height: 50px;
-    text-transform: none;
-    width: 50px;
-    @include border-radius(50%);
-  }
 }
 .reached {  
   margin-bottom: 3rem;
@@ -823,7 +833,36 @@ select.form-control {
   &-link {
     border: none;
   }
+  .btn-group {
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: whitesmoke;
+  }
+  .btn-flat {     
+    color: $dark; 
+    border: none;
+    padding: 6px 10px;
+    font-size: 11px;
+    margin-top: 0;
+    text-align: center;
+    background-color: transparent;
+    @include border-radius(0);
+    & i {
+      color: $dark;
+    }
+    &.active {
+      color: $success;
+      pointer-events: none;
+    }
+    &:last-child {
+      border-right: none;
+    }
+    & .fa-check-circle, & .fa-star {
+      color: $success;
+    }
+  }
 }
+
 
 /*===============*/
 /*  MURAL VAGAS  */
@@ -840,19 +879,6 @@ select.form-control {
     b {
       color: $dark;
     }
-    .btn {
-      font-weight: bold;
-      padding: 6px 10px;
-      font-size: 13px;
-      margin-top: 10px;
-    }
-  }
-  .candidato {
-    position: absolute;
-    color: $success;
-    top: 3px;
-    right: 7px;
-    font-size: 15px;
   }
 }
 
@@ -863,9 +889,16 @@ select.form-control {
 #mural-avisos {
   ul {
     @extend .list-unstyled;
-  }
+  }  
 }
 
+
+/*==============*/
+/*  MURAL MISC  */
+/*==============*/
+.mural-control {
+  margin-bottom: 15px;
+}
 
 
 /*=============*/
@@ -901,6 +934,13 @@ select.form-control {
   }
 
 }
+
+
+/*===================*/
+/*  INDEX PROFESSOR  */
+/*===================*/
+
+
 
 /*==========*/
 /*  FOOTER  */

@@ -250,18 +250,20 @@
   }
 }
 .form-control {
-  background-color: rgba($silver, 15%);
-  border: none;
+  background-color: #fff;
+  border: 2px solid $gray;
   color: $dark !important;
-  text-align: center;
-  @include border-radius(0);  
-  &:focus {
-    background-color: rgba($primary, 15%);
-    & ~ .input-group-append {
-      & > button {
-        color: #fff;
-      }
-    }
+  text-align: left;
+  @include border-radius(5px !important);  
+  @include box-shadow(none);
+  &:focus {    
+    border-color: darken($gray, 15%) !important;
+    @include box-shadow(none !important);
+    // & ~ .input-group-append {
+    //   & > button {
+    //     color: #fff;
+    //   }
+    // }
   }
 }
 .form-group {

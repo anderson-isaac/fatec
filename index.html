@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+
+  <title>Mural FATEC </title>
+  <base href="http://localhost/fatec/"/>
+  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <link rel="stylesheet" href="assets/css/sweetalert.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/axios.min.js"></script>
+</head>
+
+
+  <body class="bk" data-bk="https://picsum.photos/800/800">
+
+    <section class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5">
+          <div class="center-box">
+            <div class="card text-center">
+              <div class="container">
+                <div class="row mt-4 align-items-center">
+                  <div class="col-7"><h1>MURAL</h1> </div>
+                  <div class="col-5"><img src="./assets/images/logo-fatec.png" class="img-fluid" alt=""></div>
+                </div>    
+              </div>
+              <hr>              
+              <div class="card-body">
+                <div class="etapas">
+                  <div class="active">
+                    <form id="login-form">
+                      <p class="card-text">Digite seu <b>Login</b> e <b>Senha</b> para acessar</p>
+                      <div class="form-group">
+                        <label>Login</label>
+                        <input type="text" class="form-control text-center" name="Login" autocomplete="off" required="required">
+                      </div>
+                      <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" class="form-control text-center" name="Senha" autocomplete="off" required="required">
+                      </div>
+                      <div class="text-left form-inline">
+                        <div class="custom-control custom-radio mr-3">
+                          <input type="radio" class="custom-control-input" id="TipoAcessoAluno" name="Tipo_acesso" value="aluno" checked="checked">
+                          <label class="custom-control-label" for="TipoAcessoAluno">Aluno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                          <input type="radio" class="custom-control-input" id="TipoAcessoProfessor" name="Tipo_acesso" value="professor">
+                          <label class="custom-control-label" for="TipoAcessoProfessor">Professor</label>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                      </div>
+                      <div class="alert alert-top" style="display: none;"></div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button id="makeweb-btn" type="button" class="link-to clear-btn" data-to="https://www.makeweb.com.br">
+              <img src="images/makeweb.png" alt="">
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="loader">
+      <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
+
+    <script src="assets/js/jquery.3.2.1.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/sweetalert.min.js"></script>
+    <script src="assets/js/jquery.mask.js"></script>
+    <script src="assets/js/jquery.validate.js"></script>
+    <script src="assets/js/main.js"></script>
+  
+    <script>
+      $(function() {
+
+        $('form').validate();
+
+        $(document).on('submit', '#cliente-id-form', function(e) {
+          e.preventDefault();
+          var _t = $(this);
+          var submit_button = $(this).find('button:submit');
+          _t.find('.alert').removeClass().addClass('alert').hide();
+          $.ajax({
+            url: 'server/set-ra.php',
+            type: 'post',
+            dataType: 'json',
+            data: _t.serializeArray(),
+            beforeSend: function() {
+              submit_button.html("<i class='fa fa-refresh fa-spin'></i>");
+              _t.find('.alert').html('').removeClass('alert-error').hide();
+            },
+            success: function(json) {
+              if (json.status == '1') {
+                $('[data-etapa=\"1\"] input').val('');
+                $('.etapas').etapas('next');
+              } else {
+                _t.find('.alert').html(json.erro).addClass('alert-error');
+              }
+              submit_button.html("<i class='fa fa-send'></i>");
+            },
+            error: function() {
+              submit_button.html("<i class='fa fa-send'></i>");
+              _t.find('.alert').html('Ocorreu um erro inesperado').addClass('alert-error').show();
+            }
+          });
+        }).on('focus', '#cliente-id-form input', function() {
+          $(this).closest('form').find('.alert').html('').removeClass('alert-error').hide();
+        });
+
+
+        $(document).on('submit', '#login-form', function(e) {
+          e.preventDefault();
+          var _t = $(this);
+          var submit_button = $(this).find('button:submit');
+          _t.find('.alert').removeClass().addClass('alert');
+          $.ajax({
+            url: 'server/login.php',
+            type: 'post',
+            dataType: 'json',
+            data: _t.serializeArray(),
+            beforeSend: function() {
+              submit_button.html("<i class='fa fa-refresh fa-spin'></i>");
+              _t.find('.alert').html('').removeClass('alert-error');
+            },
+            success: function(json) {
+              if (json.status == '1') {
+                if (json.tipo_acesso == 'aluno') {
+                  document.location.href = './mural.html';
+                } else {
+                  document.location.href = './index-professor.html';
+                }
+              } else {
+                _t.find('.alert').html(json.erro).addClass('alert-error');
+              }
+              submit_button.html("Enviar");
+            },
+            error: function() {
+              submit_button.html("Enviar");
+              _t.find('.alert').html('Ocorreu um erro inesperado').addClass('alert-error');
+            }
+          });
+        }).on('focus', '#login-form input', function() {
+          $(this).closest('form').find('.alert').html('').removeClass('alert-error');
+        });
+
+      });
+
+      window.onload = function() {
+        $('.loader').fadeOut();
+      }
+
+    </script>
+
+  </body>
+</html>

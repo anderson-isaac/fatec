@@ -10,174 +10,210 @@
 
     <title>Mural FATEC </title>
     <base href="http://localhost/fatec/"/>
+    <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./assets/css/normalize.css">        
-    <link rel="stylesheet" href="./assets/css/sweetalert.css">
-    <link rel="stylesheet" href="./assets/css/styles.css">
-    <script src="./assets/js/vue.min.js"></script>
-    <script src="./assets/js/axios.min.js"></script>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/sweetalert.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/vue.min.js"></script>
+    <script src="assets/js/axios.min.js"></script>
   </head>
 
   <body>
 
-    <header class="load-me" data-src="./components/header.html"></header>
-    
-    <section id="mural" class="page-section">      
-      <nav id="nav-component" class="nav locked">
-        <button type="button" data-tab="#mural-vagas" class="nav-link active">Vagas</button>
-        <button type="button" data-tab="#mural-avisos" onclick="carregarAvisos()" class="nav-link">Avisos</button>
-      </nav>                
-      <div id="nav-area" class="container tall">   
+    <header class="load-me" data-src="components/header.html"></header>
+
+    <section id="mural" class="page-section">
+      <nav id="nav-component" class="nav">
+        <button type="button" :class="tab" v-on:click="loadTab(0)">Vagas</button>
+        <button type="button" :class="tab" v-on:click="loadTab(1)">Avisos</button>
+      </nav>
+      <div id="nav-area" class="container tall">
 
         <div id="mural-vagas" class="nav-area-item active">
           <div class="filters form-inline">
             <div class="custom-control custom-checkbox mr-3">
-              <input type="checkbox" class="custom-control-input" id="filter-favoritos" v-model="filtrarFavoritos">
-              <label class="custom-control-label" for="filter-favoritos"> Favoritos</label>
+              <input type="checkbox" class="custom-control-input" id="vagas-favoritos" v-model="filtrarFavoritos">
+              <label class="custom-control-label" for="vagas-favoritos"> Favoritos</label>
             </div>
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="filter-candidaturas" v-model="filtrarCandidaturas">
-              <label class="custom-control-label" for="filter-candidaturas"> Candidaturas</label>
+              <input type="checkbox" class="custom-control-input" id="vagas-candidaturas" v-model="filtrarCandidaturas">
+              <label class="custom-control-label" for="vagas-candidaturas"> Candidaturas</label>
             </div>
           </div>
           <div class="vue-loading" v-if="loading">
             <i class="fa fa-spinner fa-spin"></i>
           </div>
-          <div class="card mb-3" v-for="vaga in vagas" v-if="!loading">            
-            <div class="candidato" v-if="vaga.candidato">
-              <i class="fa fa-check-circle"></i>              
-            </div>
+          <div class="card mb-3" v-for="vaga in vagas" v-if="!loading">
             <div class="card-body">
-              <ul class="pb-0">              
+              <ul class="pb-0">
                 <li><b>Empresa</b> {{ vaga.empresa }}</li>
                 <li><b>Vaga</b> {{ vaga.vaga }}</li>
                 <li><b>Postado em</b> {{ vaga.postado }}</li>
-                <li>
-                  <a :href="`./vaga.html?id=${vaga.id}`">
-                    <b>Mais detalhes</b>
-                  </a>
-                </li>              
               </ul>
             </div>
-            <button type="button" class="favorite favorite-ok" :data-id="vaga.id" v-if="vaga.favorito">
-              <i class='fa fa-star'></i> Adicionado aos favoritos
-            </button>
-            <button type="button" class="favorite" :data-id="vaga.id" v-else>
-              <i class="fa fa-star fa-pulse"></i> Adicionar aos favoritos
-            </button>
+            <div class="btn-group">
+
+              <!-- PÁGINA INTERNA -- START -->
+              <a :href="`vaga.html?id=${vaga.id}`" class="btn btn-flat">
+                <i class ="fa fa-plus"></i>
+                Detalhes
+              </a>
+              <!-- PÁGINA INTERNA -- END -->
+
+              <!-- FAVORITAR -- START -->
+              <button type="button" class="btn btn-flat active" :data-id="vaga.id" v-if="vaga.favorito">
+                <i class="fa fa-star"></i>
+                Favorito
+              </button>
+              <button type="button" class="favoritar btn btn-flat" :data-id="vaga.id" v-else>
+                <i class="fa fa-star-o"></i>
+                Favoritar
+              </button>
+              <!-- FAVORITAR -- END -->
+
+              <!-- Cadastrar à vaga -- START -->
+              <button type="button" class="btn btn-flat active" v-if="vaga.candidato">
+                <i class="fa fa-check-circle"></i>
+                Concorrendo
+              </button>
+              <button type="button" class="candidatar btn btn-flat" :data-id="vaga.id" v-else>
+                <i class="fa fa-circle-o"></i>
+                Candidatar
+              </button>
+              <!-- Cadastrar à vaga -- END -->
+
+            </div>
           </div>
           <div class="alert alert-danger" v-if="errored">
             <p><i class="fa fa-error"></i> Ocorreu um erro ao carregar as vagas, por favor, tente novamente mais tarde. </p>
           </div>
 
           <div class="mural-control text-center">
-            <div class="load-more" v-if="carregarMais">
-              <button type="button" v-on:click="carregarVagas">
-                <i class="fa fa-plus"></i>
+            <div class="load-more" v-if="carregarMais && !loading">
+              <button type="button" class="btn btn-secondary btn-full" v-on:click="carregar">
+                Carregar mais postagens
               </button>
-              Carregar mais...
-            </div>            
+            </div>
           </div>
         </div>
 
-        <div id="mural-avisos" class="nav-area-item">             
+        <div id="mural-avisos" class="nav-area-item">
+          <div class="filters form-inline">
+            <div class="custom-control custom-checkbox mr-3">
+              <input type="checkbox" class="custom-control-input" id="avisos-favoritos" v-model="filtrarFavoritos">
+              <label class="custom-control-label" for="avisos-favoritos"> Favoritos</label>
+            </div>
+          </div>
           <div class="vue-loading" v-if="loading">
             <i class="fa fa-spinner fa-spin"></i>
           </div>
-          <ul v-for="aviso in avisos">
+          <ul v-for="aviso in avisos" v-if="!loading">
             <li class="card">
-              <a :href="`./aviso.html?id=${ aviso.id }`" v-if="aviso.capa">
+              <a :href="`aviso.html?id=${ aviso.id }`" v-if="aviso.capa">
                 <img class="card-img-top" :src="`${ aviso.capa }`" alt="">
               </a>
-              <div class="card-body">                
+              <div class="card-body">
                 <h5 class="card-title">
                   <div class="author">
-                    <a :href="`./aviso.html?id=${ aviso.id }`">
+                    <a :href="`professor.html?id=${ aviso.autor }`">
                       <img :src="`${ aviso.autor_foto }`" alt="" class="profile-photo">
                     </a>
                     <small>
-                      <a :href="`./professor.html?id=${aviso.autor}`">
+                      <a :href="`professor.html?id=${aviso.autor}`">
                         {{ aviso.autor_nome }}
                       </a>
                     </small>
-                  </div>                  
-                  <a :href="`./aviso.html?id=${ aviso.id }`">
+                  </div>
+                  <a :href="`aviso.html?id=${ aviso.id }`">
                   {{ aviso.titulo }}
                   </a>
                 </h5>
                 <p class="card-text">
                   {{ aviso.resumo }}
                 </p>
-                <a :href="`./aviso.html?id=${ aviso.id }`" class="card-link">
-                  Continuar lendo...
-                </a>        
-                <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>                                                   
+                <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>
               </div>
-              <button type="button" class="favorite favorite-ok" :data-id="aviso.id" v-if="aviso.favorito">
-                <i class='fa fa-check'></i> Adicionado aos favoritos
-              </button>
-              <button type="button" class="favorite" :data-id="aviso.id" v-else>
-                <i class="fa fa-star fa-pulse"></i> Adicionar aos favoritos
-              </button> 
+              <div class="btn-group">
+
+                <a :href="`aviso.html?id=${ aviso.id }`" class="btn btn-flat">
+                  <i class="fa fa-search"></i> Ver conteúdo completo
+                </a>
+
+                <!-- FAVORITAR -- START -->
+                <button type="button" class="btn btn-flat active" v-if="aviso.favorito">
+                  <i class="fa fa-star"></i>
+                  Favorito
+                </button>
+                <button type="button" class="favoritar btn btn-flat" :data-id="aviso.id" v-else>
+                  <i class="fa fa-star-o"></i>
+                  Favoritar
+                </button>
+                <!-- FAVORITAR -- END -->
+
+              </div>
             </li>
           </ul>
           <div class="mural-control text-center">
-            <div class="load-more" v-if="carregarMais">
-              <button type="button" v-on:click="this.carregarAvisos">
-                <i class="fa fa-plus"></i>
+            <div class="load-more" v-if="carregarMais && !loading">
+              <button type="button" class="btn btn-secondary btn-full" v-on:click="carregar">
+                Carregar mais postagens
               </button>
-              Carregar mais...
-            </div>            
+            </div>
           </div>
         </div>
 
       </div>
-    </section>    
+    </section>
 
-    <footer class="load-me" data-src="./components/footer.html"></footer>
+    <footer class="load-me" data-src="components/footer.html"></footer>
 
-    <script src="./assets/js/jquery.3.2.1.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
-    <script src="./assets/js/sweetalert.min.js"></script>
-    <script src="./assets/js/main.js"></script>
+    <script src="assets/js/jquery.3.2.1.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/mask.js"></script>
+    <script src="assets/js/sweetalert.min.js"></script>
+    <script src="assets/js/main.js"></script>
 
 
     <script>
+
+      var tab = getUrlParameter('tab') ? getUrlParameter('tab') : 0,                
+                tabsLoaded = [];
 
       var axiosConfig = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
       };
-      
+
       /* VUE :: VAGAS APP */
       var vagasURL = base + 'server/vagas.php';
-      var vagasApp = new Vue({
+      var app = [];
+      app[0] = new Vue({
         el: '#mural-vagas',
         data () {
-          return {    
-            info: null,        
+          return {
+            first: true,
+            info: null,
             vagas: null,
             loading: true,
             errored: false,
             slice: 0,
             filtrarFavoritos: false,
             filtrarCandidaturas: false,
-            carregarMais: false
+            carregarMais: true,
+            once : true
           }
         },
         methods: {
-          carregarVagas: function() {      
-            var scrollHeight = $('#mural-vagas ul').length ? $('#mural-vagas .mural-control').position().top : 0;
-            if (this.slice > 0) {                 
-              $('#mural-vagas')
-                .find('.load-more i')
-                .removeClass('fa-plus')
-                .addClass('fa-spinner fa-spin'); 
-            }                      
+          carregar: function() {
+            let scrollHeight = $('#mural-vagas ul').length ? $('#mural-vagas .mural-control').position().top : 0;            
+            $('#mural-vagas')
+              .find('.load-more .btn')
+              .html("<i class='fa fa-refresh fa-spin'></i>")
             axios
             .post(vagasURL, {
               slice: this.slice,
@@ -186,7 +222,11 @@
             }, axiosConfig)
             .then(response => {
               this.info = response.data.vagas;
-              this.carregarMais = this.info.length < 6 ? false : true;              
+              if (this.info.length < 6) {
+                this.carregarMais = false;
+              } else {
+                this.carregarMais = true;
+              }
               if (this.slice > 0) {
                 this.info.forEach(element => {
                   this.vagas.push(element);
@@ -194,52 +234,7 @@
               } else {
                 this.vagas = this.info;
               }
-              this.errored = false;    
-            })
-            .catch(error => {
-              console.log(error)
-              this.errored = true
-            })
-            .finally(() => {
-              this.loading = false; 
-              if (this.slice > 0) {
-                $('#mural-vagas')
-                  .find('.load-more i')
-                  .removeClass('fa-spinner fa-spin')
-                  .addClass('fa-plus');
-                $('html, body').animate({
-                  scrollTop : scrollHeight + 40
-                }, 500);
-              }              
-              this.slice += 6;
-            })
-          }
-        },
-        watch: {
-          filtrarCandidaturas: function() {            
-            this.loading = true;
-            this.slice = 0;
-            this.carregarVagas();
-          },
-          filtrarFavoritos: function() {            
-            this.loading = true;
-            this.slice = 0;
-            this.carregarVagas();
-          }
-        },
-        mounted () {
-          axios
-            .post(vagasURL, {
-              slice: this.slice,
-              filtrarFavoritos: this.filtrarFavoritos,
-              filtrarCandidaturas: this.filtrarFavoritos
-            }, axiosConfig)
-            .then(response => {              
-              this.vagas = response.data.vagas; 
-              if (this.vagas < 6) {
-                this.carregarMais = false;                
-              }
-              this.errored = false;             
+              this.errored = false;
             })
             .catch(error => {
               console.log(error)
@@ -247,76 +242,150 @@
             })
             .finally(() => {
               this.loading = false;
-              $('#nav-component').removeClass('locked');
-              if (this.vagas.length < 6) {
-                $('#mural-vagas .load-more').remove();
-                $('#mural-vagas .reached').show();
+              if (this.slice > 0) {
+                $('#mural-vagas')
+                  .find('.load-more .btn')
+                  .html('Carregar mais postagens');
+                  let plus = 0;
+                  if (!this.once) {
+                    plus = 40;
+                  }
+                $('html, body').animate({
+                  scrollTop : scrollHeight + plus
+                }, 500);
               }
+              this.slice += 6;
+              this.once = false;
             })
+          }
+        },
+        watch: {
+          filtrarCandidaturas: function() {
+            this.loading = true;
+            this.slice = 0;
+            this.carregar();
+          },
+          filtrarFavoritos: function() {
+            this.loading = true;
+            this.slice = 0;
+            this.carregar();
+          }
         }
-      });      
+      });
 
       /* VUE :: AVISOS APP */
-      var carregarAvisos = "";
-      var avisosURL = './server/avisos.php';
-      var avisosApp = new Vue({
+      var avisosURL = base + 'server/avisos.php';
+      app[1] = new Vue({
         el: '#mural-avisos',
         data () {
-          return {    
-            info: null,        
+          return {
+            info: null,
             avisos: [],
             loading: true,
             errored: false,
             slice: 0,
-            firstLoad: true,   
-            carregarMais: false         
+            filtrarFavoritos: false,
+            firstLoad: true,
+            carregarMais: true,
+            once : true
           }
         },
         methods: {
-          carregarAvisos: function(e) {  
-            var scrollHeight = $('#mural-avisos ul').length ? $('#mural-avisos .mural-control').position().top : 0;           
+          carregar: function() {
+            let scrollHeight = $('#mural-avisos ul').length ? $('#mural-avisos .mural-control').position().top : 0;
             $('#mural-avisos')
-              .find('.load-more i')
-              .removeClass('fa-plus')
-              .addClass('fa-spinner fa-spin');  
+              .find('.load-more .btn')
+              .html("<i class='fa fa-refresh fa-spin'></i>")
             axios
             .post(avisosURL, {
-              slice: this.slice
-            })
+              slice: this.slice,
+              filtrarFavoritos: this.filtrarFavoritos
+            }, axiosConfig)
             .then(response => {
               this.info = response.data.avisos;
               if (this.info.length < 6) {
-                $('#mural-avisos .load-more').remove();
-                $('#mural-avisos .reached').show();
-              }              
-              this.info.forEach(element => {
-                this.avisos.push(element);
-              });
+                this.carregarMais = false;
+              } else {
+                this.carregarMais = true;
+              }
+              if (this.slice > 0) {
+                this.info.forEach(element => {
+                  this.avisos.push(element);
+                });
+              } else {
+                this.avisos = this.info;
+              }
+              this.errored = false;
             })
             .catch(error => {
               console.log(error)
-              this.errored = true
+              this.errored = true;
             })
-            .finally(() => {              
-              this.loading = false;              
-              $('#mural-avisos')
-                .find('.load-more i')
-                .removeClass('fa-spinner fa-spin')
-                .addClass('fa-plus');
-                console.log(scrollHeight);
-              $('html, body').animate({
-                scrollTop : this.firstLoad ? 0 : (scrollHeight + $('header').height() - 30)
-              }, 500);
-              this.slice += 6;
-              this.firstLoad = false;
+            .finally(() => {
+              this.loading = false;
+              if (this.slice > 0) {
+                $('#mural-avisos')
+                  .find('.load-more .btn')
+                  .html('Carregar mais postagens');
+                }
+                let plus = 0;                
+                if (!this.once) {
+                  plus = 40;
+                }
+                $('html, body').animate({
+                  scrollTop : scrollHeight + plus
+                }, 500);
+                this.slice += 6;
+                this.once = false;
+              
             })
           }
         },
-        mounted () {
-          carregarAvisos = this.carregarAvisos;          
+        watch: {
+          filtrarFavoritos: function() {
+            this.loading = true;
+            this.slice = 0;
+            this.carregar();
+          }
         }
-      });      
+      });
+
+      /* VUE :: NAV COMPONENT */
+      var nav = new Vue({
+      el: '#nav-component',
+      data() {
+        return {
+          tab: tab
+        }
+      },
+      methods: {
+        loadTab : function(t) {
+          let _el = $('#nav-component button').eq(t);
+          let _index = _el.index();                 
+
+          if (_el.hasClass('active')) return false;
+
+          _el.siblings().removeClass('active');
+          _el.addClass('active');
+          $('#nav-area .nav-area-item').removeClass('active');
+          $('#nav-area .nav-area-item').eq(t).addClass('active');
+
+          if (!_el.hasClass('app-loaded')) {
+            app[_index].carregar();
+            _el.addClass('app-loaded');
+          }
+
+        }
+      },
+      mounted() {
+       
+        this.loadTab(tab);
+
+      }
+    });
+
+
     </script>
-    
+
   </body>
 </html>
