@@ -13,12 +13,12 @@
     <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/normalize.css">  
-    <link rel="stylesheet" href="assets/css/sweetalert.css">      
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <script src="assets/js/vue.min.js"></script>
-    <script src="assets/js/axios.min.js"></script>
+    <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/normalize.css">  
+    <link rel="stylesheet" href="./assets/css/sweetalert.css">      
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./assets/js/vue.min.js"></script>
+    <script src="./assets/js/axios.min.js"></script>
   </head>
 
   <body>
@@ -27,7 +27,7 @@
     
     <section class="page-section">
         <nav class="app-nav">
-            <a href="`mural.html?tab=0&scrolltop=${ previousPageScrolltop }`">
+            <a href="mural.html?tab=0">
                 <i class="fa fa-chevron-left"></i>
             </a>        
             <b>Voltar</b>    
@@ -46,27 +46,61 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th>Empresa</th>
-                                    <td>{{ vaga.empresa }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Vaga</th>
-                                    <td>{{ vaga.vaga }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Postado em</th>
-                                    <td>{{ vaga.postado }}</td>
-                                </tr>
+                              <tr>
+                                <th>Cargo</th>
+                                <td>{{ vaga.cargo }}</td>
+                              </tr>
+                              <tr>
+                                <th>Descrição</th>
+                                <td>{{ vaga.descricao }}</td>
+                              </tr>
+                              <tr>
+                                <th>Tipo</th>
+                                <td>{{ vaga.tipo }}</td>
+                              </tr>
+                              <tr v-if="vaga.tipo == 'Estágio'">
+                                  <th>Valor da Bolsa</th>
+                                  <td>{{ vaga.valor_da_bolsa }}</td>
+                              </tr>
+                              <tr v-else>
+                                <th>Remuneração</th>
+                                <td>{{ vaga.remuneracao }}</td>
+                              </tr>
+                              <tr>
+                                <th>Diferencial</th>
+                                <td>{{ vaga.diferencial }}</td>
+                              </tr>
+                              <tr>
+                                <th>Benefícios</th>
+                                <td>{{ vaga.beneficios }}</td>
+                              </tr>
+                              <tr>
+                                <th>E-mail</th>
+                                <td>{{ vaga.email }}</td>
+                              </tr>
+                              <tr>
+                                <th>Whatsapp</th>
+                                <td>{{ vaga.whatsapp }}</td>
+                              </tr>
+                              <tr>
+                                <th>Situação</th>
+                                <td>{{ vaga.situacao }}</td>
+                              </tr>
+                              <tr>
+                                <th>Data da postagem</th>
+                                <td>{{ vaga.data_postagem }}</td>
+                              </tr>
+                              <tr>
+                                <th>Prazo de validade</th>
+                                <td>{{ vaga.prazo_validade }}</td>
+                              </tr>
                             </tbody>
                         </table>
-                        <p class="card-text">
-                            {{ vaga.descricao }}
-                        </p>
-                        <button type="button" class="candidatar btn btn-success btn-full mt-3" :data-id="vaga.id" v-if="vaga.candidato">
+                        <div class="alert alert-success" v-if="vaga.candidato">
                             <i class="fa fa-check"></i> 
                             Você já está concorrendo a essa vaga
-                        </button>
+                        </div>            
+                        <hr>             
                         <h5 class="card-title">                    
                             <div class="author">
                                 <img :src="vaga.autor_foto" alt="" class="profile-photo">
@@ -110,11 +144,12 @@
         
     <footer class="load-me" data-src="components/footer.html"></footer>
 
-    <script src="assets/js/jquery.3.2.1.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/sweetalert.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="./assets/js/jquery.3.2.1.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/jquery.mask.js"></script>
+    <script src="./assets/js/sweetalert.min.js"></script>
+    <script src="./assets/js/main.js"></script>
     
     <script>
       

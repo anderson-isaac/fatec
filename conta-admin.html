@@ -24,7 +24,7 @@
 
 <body>
 
-  <header class="load-me" data-src="components/header.html"></header>
+  <header class="load-me" data-src="components/header-admin.html"></header>
 
   <div id="minha-conta" class="page-section">
     <nav class="app-nav">
@@ -48,20 +48,18 @@
                 <label>E-mail</label>
                 <input type="email" name="Email" class="form-control" disabled="disabled" :value="info.email" autocomplete="email" required="required">
               </div>
-              <div class="form-group">
-                <label>Celular</label>
-                <input type="tel" name="Telefone" class="form-control" disabled="disabled" :value="info.telefone" autocomplete="phone" required="required">
+              <div class="form-group capa-atual" v-if="info.capa">
+                <label>Capa atual</label>
+                <img :src="info.capa" class="img-fluid" alt="">
               </div>
               <div class="form-group">
-                <label>Seu currículo </label>                
-                <a :href="info.curriculo" class="btn btn-light" download="download">
-                  <i class="fa fa-download"></i> Baixar
-                </a>                
+                <label>Imagem de capa</label>
+                <input type="file" name="Capa" disabled="disabled"><br>
+                <small>Tam. recomendado 300x300px</small>
               </div>
               <div class="form-group">
-                <label>Atualizar Currículo</label>
-                <input type="file" name="Curriculo" class="form-control" disabled="disabled" accept="application/pdf">
-                <small>Utilizar formato PDF</small>
+                <label>Texto de apresentação</label>
+                <textarea name="Apresentacao" rows="5" class="form-control" disabled="disabled">{{ info.apresentacao }}</textarea>
               </div>
               <div class="form-group buttons">
                 <div>
@@ -82,14 +80,14 @@
                 <div class="form-group">
                   <div class="form-group">
                     <label>Senha Atual</label>
-                    <input type="password" name="Senha_atual" class="form-control" required="required">
+                    <input type="password" id="Senha_atual" name="Senha_atual" class="form-control" required="required">
                     <div class="see-password"><i class="fa fa-square-o"></i> Mostrar senha</div>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="form-group">
                     <label>Senha Nova</label>
-                    <input type="password" name="Senha_nova" class="form-control" required="required">
+                    <input type="password" id="Senha_nova" name="Senha_nova" class="form-control" required="required">
                     <div class="see-password"><i class="fa fa-square-o"></i> Mostrar senha</div>
                   </div> 
                 </div>
@@ -138,7 +136,7 @@
           var submit_button = $(this).find('button:submit');
           _t.find('.alert').hide();
           $.ajax({
-            url: 'server/set-conta.php',
+            url: 'server/admin/set-conta.php',
             type: 'post',
             dataType: 'json',
             data: _t.serializeArray(),
@@ -164,13 +162,24 @@
           });
         });
 
-        $(document).on('submit', '#conta-form', function(e) {
+        $('#senha-form').validate({
+          rules: {
+            Senha_atual: "required",
+            Senha_nova: {
+              equalTo: "#Senha_atual"
+            }
+          }
+        })
+        $(document).on('submit', '#senha-form', function(e) {
           e.preventDefault();
           var _t = $(this);
           var submit_button = $(this).find('button:submit');
-          _t.find('.alert').hide();
+          _t.find('.alert')
+            .removeClass()
+            .addClass('alert')
+            .hide();
           $.ajax({
-            url: 'server/set-password.php',
+            url: 'server/admin/set-password.php',
             type: 'post',
             dataType: 'json',
             data: _t.serializeArray(),
@@ -180,20 +189,26 @@
             },
             success: function(json) {
               if (json.status == '1') {
-                _t.find('.button > div').toggle();
-                _t.find('.disable-me').prop('disabled', true).removeClass('disable-me');
+                _t.find('.alert')
+                  .html("Sua senha foi alterada com sucesso.")
+                  .addClass("alert-success")
+                  .show();
               } else {
-                _t.find('.alert').html(json.erro).show();
+                _t.find('.alert')
+                  .html(json.erro)
+                  .addClass('alert-error')
+                  .show();
                 return false;
               }
-              submit_button.html("<i class='material-icons'>save</i> Salvar");
+              submit_button.html("Atualizar");
             },
             error: function() {
-              submit_button.html("<i class='material-icons'>save</i> Salvar");
+              submit_button.html("Atualizar");
               _t.find('.alert').html('Ocorreu um erro inesperado').show();
             }
           });
         });
+        
 
     });
 
@@ -209,7 +224,7 @@
             },
             mounted () {
                 axios
-                    .get('server/get-conta.php')
+                    .get('server/admin/get-admin.php')
                     .then(response => (this.info = response.data ))
                     .catch(error => {
                     this.errorMessage = error;

@@ -14,29 +14,29 @@
   <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
   <meta name="description" content="" />
   <meta name="keywords" content="" />
-  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-  <link rel="stylesheet" href="assets/css/normalize.css">
-  <link rel="stylesheet" href="assets/css/sweetalert.css">
-  <link rel="stylesheet" href="assets/css/datatables.min.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/vue.min.js"></script>
-  <script src="assets/js/axios.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./assets/css/normalize.css">
+  <link rel="stylesheet" href="./assets/css/sweetalert.css">
+  <link rel="stylesheet" href="./assets/css/datatables.min.css">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <script src="./assets/js/vue.min.js"></script>
+  <script src="./assets/js/axios.min.js"></script>
 </head>
 
 <body>
 
-  <header class="load-me" data-src="components/header.html"></header>
+  <header class="load-me" data-src="components/header-admin.html"></header>
 
   <div id="index-professor" class="page-section">
-    <section class="container-fluid">
+    <section class="container">
       <div class="tall">
 
         <div class="row mt-5">
-          <div class="col-12 col-md-6">
+          <div class="col-12">
             <div class="surface mt-5">
               <h4>Vagas</h4><br>
               <button class="btn btn-primary" data-toggle="modal" data-target="#vaga-modal">
-                <i class="fa fa-plus"></i> Novo
+                <i class="fa fa-plus"></i> Adicionar
               </button>
 
               <hr>
@@ -46,6 +46,8 @@
                   <tr>
                     <th></th>
                     <th>Título</th>
+                    <th>Situação</th>
+                    <th>Data da postagem</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
@@ -54,11 +56,11 @@
 
             </div>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12">
             <div class="surface mt-5">
               <h4>Avisos</h4><br>
               <button class="btn btn-primary" data-toggle="modal" data-target="#aviso-modal">
-                <i class="fa fa-plus"></i> Novo
+                <i class="fa fa-plus"></i> Adicionar
               </button>
 
               <hr>
@@ -66,64 +68,13 @@
               <table id="table-avisos" class="table">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>Título</th>
+                    <th>Data da postagem</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Aulas de amanhã 20/06/2020 </td>
-                    <td>
-                      <div class="btn-group">
-                        <button class="btn btn-danger delete-this">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                        <button class="btn btn-info edit-this">
-                          <i class="fa fa-edit"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Aulas de amanhã 20/06/2020 </td>
-                    <td>
-                      <div class="btn-group">
-                        <button class="btn btn-danger delete-this">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                        <button class="btn btn-info edit-this">
-                          <i class="fa fa-edit"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Aulas de amanhã 20/06/2020 </td>
-                    <td>
-                      <div class="btn-group">
-                        <button class="btn btn-danger delete-this">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                        <button class="btn btn-info edit-this">
-                          <i class="fa fa-edit"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Aulas de amanhã 20/06/2020 </td>
-                    <td>
-                      <div class="btn-group">
-                        <button class="btn btn-danger delete-this">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                        <button class="btn btn-info edit-this">
-                          <i class="fa fa-edit"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
+                <tbody></tbody>
               </table>
             </div>
           </div>
@@ -141,7 +92,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Nova Vaga</h4>
+          <h4 class="modal-title">Vaga</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -223,7 +174,7 @@
               <select name="Situacao" id="" class="form-control">
                 <option value="0">Fechada</option>
                 <option value="1" selected>Em aberto</option>
-                <option value="3">Suspensa</option>
+                <option value="2">Suspensa</option>
               </select>
             </div>
 
@@ -259,7 +210,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Novo Aviso</h4>
+          <h4 class="modal-title">Aviso  <small class="badge-aviso"></small></h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -273,11 +224,11 @@
             </div>
             <div class="form-group">
               <label>Texto</label>
-              <textarea name="Texto" rows="10" class="form-control"></textarea>
+              <textarea name="Texto" rows="10" class="form-control" required="required"></textarea>
             </div>
-            <div class="form-group">
+            <div class="form-group capa-atual" style="display: none;">
               <label>Capa atual</label>
-              <img src="https://picsum.photos/600/400" class="img-fluid" alt="">
+              <img src="" class="img-fluid" alt="">
             </div>
             <div class="form-group">
               <label>Imagem de capa</label>
@@ -288,7 +239,7 @@
           
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" data-dismiss="modal">Enviar</button>
+            <button type="submit" class="btn btn-primary">Enviar</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
           </div>
 
@@ -298,14 +249,14 @@
     </div>
   </div>
 
-  <script src="assets/js/jquery.3.2.1.js"></script>
-  <script src="assets/js/popper.min.js"></script>
-  <script src="assets/js/bootstrap.min.js"></script>
-  <script src="assets/js/sweetalert.min.js"></script>
-  <script src="assets/js/jquery.mask.js"></script>
-  <script src="assets/js/jquery.validate.js"></script>
-  <script src="assets/js/datatables.min.js"></script>  
-  <script src="assets/js/main.js"></script>
+  <script src="./assets/js/jquery.3.2.1.js"></script>
+  <script src="./assets/js/popper.min.js"></script>
+  <script src="./assets/js/bootstrap.min.js"></script>
+  <script src="./assets/js/sweetalert.min.js"></script>
+  <script src="./assets/js/jquery.mask.js"></script>
+  <script src="./assets/js/jquery.validate.js"></script>
+  <script src="./assets/js/datatables.min.js"></script>  
+  <script src="./assets/js/main.js"></script>
 
   <script>
 
@@ -467,20 +418,19 @@
         "searching" : false,
         "bFilter" : false,
         "language": {
-          "url": base + "assets/js/Portuguese-Brasil.json"
+          "url": base + "./assets/js/Portuguese-Brasil.json"
         },
         processing: true,
         serverSide: true,
         ajax : {
           url : base + "server/admin/get-vagas.php",
-          type : "post",
-          data : function(e) {
-            console.log(e);
-          }
+          type : "post"
         },
         columns : [              
           { "data" : "Id_vaga", "visible" : false },
           { "data" : "Titulo" },
+          { "data" : "Situacao", "visible" : false },
+          { "data" : "Data_postagem" },
           { "data" : "Acoes" }
         ],
       });
@@ -559,6 +509,47 @@
         });
       });
 
+      $(document).on('submit', '#form-vaga', function(e) {
+        e.preventDefault();
+        let _t = $(this);
+        let _btn = _t.find('button:submit').html();
+        let valid = _t.valid();
+        if (!valid) return;
+        $.ajax({
+          url : base + 'server/admin/add-vaga.php',
+          type : "post",
+          dataType : "json",
+          data : _t.serializeArray(),
+          beforeSend : function() {
+            _t.find('button:submit').width(_t.find('button:submit').width()).html("<i class='fa fa-refresh fa-spin'></i>");
+          },
+          complete: function() {
+            _t.find('button:submit').html(_btn);
+          },
+          success: function(res) {
+            if (res.status == 'success') {
+              $('#vaga-modal').modal('hide');
+              _t[0].reset();
+              table_vagas.ajax.reload();
+            } else {
+              swal({
+                title : "Erro",
+                text : "Não foi possível adicionar uma nova vaga.",
+                icon : "error"
+              })
+            }
+          },
+          error : function() {
+            swal({
+              title : "Erro",
+              text : "Não foi possível adicionar uma nova vaga.",
+              icon : "error"
+            })
+          }
+        })
+      });
+
+      // Aviso
       table_avisos = $('#table-avisos').DataTable({
         responsive : true,
         "paging" : false,
@@ -567,12 +558,151 @@
         "searching" : false,
         "bFilter" : false,
         "language": {
-          "url": base + "assets/js/Portuguese-Brasil.json"
-        }
+          "url": base + "./assets/js/Portuguese-Brasil.json"
+        },
+        processing: true,
+        serverSide: true,
+        ajax : {
+          url : base + "server/admin/get-avisos.php",
+          type : "post"
+        },
+        columns : [              
+          { "data" : "Id_aviso", "visible" : false },
+          { "data" : "Titulo" },
+          { "data" : "Data_postagem" },
+          { "data" : "Acoes" }
+        ],
+      });
+      
+      $(document).on('click', '#table-avisos .delete-this', function() {
+        let _t = $(this);
+        let _btn = _t.html();
+        let id_vaga = _t.data('id');
+        swal({
+          title: "Tem certeza?",
+          text: "Essa operação não poderá ser desfeita!",
+          icon: "warning",
+          buttons: [
+            'Não',
+            'Sim'
+          ],
+          dangerMode: true,
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            $.ajax({
+              url: base + 'server/admin/excluir-aviso.php',
+                data : { Id_vaga : id_vaga },
+                type : 'post',
+                beforeSend : function() {
+                  _t.html("<i class='fa fa-refresh fa-spin'></i>");
+                },
+                complete : function() {
+                  _t.html(_btn);
+                },
+                success : function(res) {
+                  if (res.status == 'success') {
+                    swal({
+                      title: 'Sucesso!',
+                      text: 'O aviso foi excluído',
+                      icon: 'success'
+                    }).then(function() {            
+                      _t.html(_btn);                               
+                      table_avisos.ajax.reload();
+                    });
+                  }
+                },
+                error : function() {
+                  _t.html(_btn);
+                  swal({
+                    title : 'Erro',
+                    text : 'Não foi possível concluir a operação nesse momento.',
+                    icon : 'error' 
+                  })
+                },
+              });
+            
+          }
+        });
       });
 
+      
+      $(document).on('click', '#table-avisos .edit-this', function() {
+        let _t = $(this);
+        let id_aviso = _t.data('id');
+        let _btn = _t.html();
+        $.ajax({
+          url: base + 'server/admin/get-aviso.php',
+          data : { Id_aviso : id_aviso },
+          type : 'post',
+          beforeSend : function() {
+            _t.html("<i class='fa fa-refresh fa-spin'></i>");
+          },
+          complete: function() {
+            _t.html(_btn);
+          },
+          success : function(res) {
+            console.log(res);
+            $("#form-aviso [name='Titulo']").val(res.titulo);
+            $("#form-aviso [name='Texto']").val(res.texto);
+            $("#form-aviso .capa-atual img").attr('src', res.capa);
+            $("#form-aviso .capa-atual").show();
+            $("#aviso-modal .badge-aviso").html(res.data_postagem).show();
+            $('#aviso-modal').modal("show");
+          }
+        });
+      });
 
-      // Aviso
+      $('#aviso-modal').on('hide.bs.modal', function (e) {
+        $('#form-aviso')[0].reset();    
+            $("#aviso-modal .badge-aviso").hide();
+        $("#form-aviso .capa-atual").hide();
+      });
+
+      $('#form-aviso').validate();
+
+      $(document).on('submit', '#form-aviso', function(e) {
+        e.preventDefault();
+        let _t = $(this);
+        let valid = _t.valid();
+        if (!valid) return;
+        let _btn = _t.find('button:submit').html();
+        let _data = new FormData($('#form-aviso')[0]); 
+        console.log(_data);
+        $.ajax({
+          url : base + 'server/admin/add-aviso.php',
+          type : "post",
+          dataType : "json",
+          data : _data,
+          processData: false,
+          contentType: 'multipart/form-data',
+          beforeSend : function() {
+            _t.find('button:submit').width(_t.find('button:submit').width()).html("<i class='fa fa-refresh fa-spin'></i>");
+          },
+          complete: function() {
+            _t.find('button:submit').html(_btn);
+          },
+          success: function(res) {
+            if (res.status == 'success') {
+              $('#aviso-modal').modal('hide');
+              _t[0].reset();
+              table_avisos.ajax.reload();
+            } else {
+              swal({
+                title : "Erro",
+                text : "Não foi possível adicionar um novo aviso.",
+                icon : "error"
+              })
+            }
+          },
+          error : function() {
+            swal({
+              title : "Erro",
+              text : "Não foi possível adicionar um novo aviso.",
+              icon : "error"
+            })
+          }
+        })
+      });
 
 
     });

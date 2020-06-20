@@ -10419,9 +10419,9 @@ select.form-control option {
 }
 
 /*=============*/
-/*  PROFESSOR  */
+/*  ADMIN  */
 /*=============*/
-#professor .profile-picture img {
+#admin .profile-picture img {
   display: block;
   margin: 15px auto 10px;
   height: auto;
@@ -10432,18 +10432,18 @@ select.form-control option {
   -o-border-radius: 160px;
   border-radius: 160px;
 }
-#professor .card {
+#admin .card {
   text-align: justify;
 }
-#professor .card-title {
+#admin .card-title {
   text-align: center;
 }
-#professor .list-group-item {
+#admin .list-group-item {
   position: relative;
   font-size: 12px;
   padding-left: 35px;
 }
-#professor .list-group-item i.material-icons {
+#admin .list-group-item i.material-icons {
   position: absolute;
   font-size: 19px;
   left: 10px;

@@ -235,11 +235,14 @@
               console.log(response.data.vagas);
               this.info = response.data.vagas;
               if (this.info.length < 6) {
+                console.log(1);
                 this.carregarMais = false;
               } else {
+                console.log(2);
                 this.carregarMais = true;
               }
               if (this.slice > 0) {
+                console.log(3);
                 this.info.forEach(element => {
                   this.vagas.push(element);
                 });

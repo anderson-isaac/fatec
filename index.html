@@ -10,16 +10,16 @@
 
 
   <title>Mural FATEC </title>
-  <base href="http://localhost/fatec/"/>
-  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+  <!-- <base href="http://localhost/fatec/"/> -->
+  <base href="http://desenvolvimentomw.com.br/anderson/tests/"/>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
-  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-  <link rel="stylesheet" href="assets/css/normalize.css">
-  <link rel="stylesheet" href="assets/css/sweetalert.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/vue.min.js"></script>
-  <script src="assets/js/axios.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./assets/css/normalize.css">
+  <link rel="stylesheet" href="./assets/css/sweetalert.css">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <script src="./assets/js/vue.min.js"></script>
+  <script src="./assets/js/axios.min.js"></script>
 </head>
 
 
@@ -41,9 +41,9 @@
                 <div class="etapas">
                   <div class="active">
                     <form id="login-form">
-                      <p class="card-text">Digite seu <b>Login</b> e <b>Senha</b> para acessar</p>
+                      <p class="card-text">Digite seu <b>E-mail</b> e <b>Senha</b> para acessar</p>
                       <div class="form-group">
-                        <label>Login</label>
+                        <label>E-mail</label>
                         <input type="text" class="form-control text-center" name="Login" autocomplete="off" required="required">
                       </div>
                       <div class="form-group">
@@ -57,7 +57,7 @@
                         </div>
                         <div class="custom-control custom-radio">
                           <input type="radio" class="custom-control-input" id="TipoAcessoProfessor" name="Tipo_acesso" value="professor">
-                          <label class="custom-control-label" for="TipoAcessoProfessor">Professor</label>
+                          <label class="custom-control-label" for="TipoAcessoProfessor">Professor/Admin</label>
                         </div>
                       </div>
                       <hr>
@@ -83,13 +83,13 @@
       <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     </div>
 
-    <script src="assets/js/jquery.3.2.1.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/sweetalert.min.js"></script>
-    <script src="assets/js/jquery.mask.js"></script>
-    <script src="assets/js/jquery.validate.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="./assets/js/jquery.3.2.1.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/sweetalert.min.js"></script>
+    <script src="./assets/js/jquery.mask.js"></script>
+    <script src="./assets/js/jquery.validate.js"></script>
+    <script src="./assets/js/main.js"></script>
   
     <script>
       $(function() {
@@ -148,7 +148,7 @@
                 if (json.tipo_acesso == 'aluno') {
                   document.location.href = './mural.html';
                 } else {
-                  document.location.href = './index-professor.html';
+                  document.location.href = './index-admin.html';
                 }
               } else {
                 _t.find('.alert').html(json.erro).addClass('alert-error');
