@@ -1,4 +1,5 @@
 $url : 'http://desenvolvimentomw.com.br/anderson/tests/';
+$url : 'http://localhost/fatec/';
 
 @import "./theme.scss";
 @import "./bootstrap/bootstrap.scss";
@@ -14,6 +15,7 @@ body {
   color: $dark;
   position: relative;
   &.bk {
+    background-size: cover;
     &:before {
       content: "";
       display: block;
@@ -27,27 +29,12 @@ body {
     }
   }
 }
-h1, h2, h3, label, strong, b {
+h1, h2, h3, label, strong {
   color: $primary;
   font-weight: bold;
 }
 .relative {
   position: relative;
-}
-label {
-  position: relative;
-  &.error {
-    display: inline-block;
-    font-size: 12px;
-    margin-top: 2px;
-    font-weight: normal;
-    position: relative;
-    padding: 2px 7px;
-    background-color: $error;
-    color: #fff;
-    width: auto;    
-    @include border-radius(3px);
-  }
 }
 hr {
   border-color: rgba($dark, 15%);
@@ -92,6 +79,9 @@ button {
   margin: 0 auto;
   max-width: 100px;
 }
+.custom-control-label {
+  position: relative;
+}
 .toggle-area {
   .form-group {
     display: none;
@@ -106,6 +96,81 @@ button {
     color: $dark !important;
   }
 }
+
+/* bootstrap form group */
+.form-group {
+  position: relative;
+  .form-control {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid $secondary;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 2rem;    
+    padding-right: 30px;
+    @include border-radius(0);
+    &:hover {
+      border-color: $dark;
+    }
+    &:focus {
+      border-color: #000;
+      @include box-shadow(none !important);
+    }
+  }
+  &.has-error {
+    .form-control {
+      border-color: $error;
+    }
+    label.error {
+      background-color: $error;
+      display: block;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      left: 0;
+      top: 100%;
+      padding: 2px 8px;
+      position: absolute;
+    }
+    &:before {
+      bottom: 0;
+      background-color: $error;
+      content: "\f00d";
+      color: #fff;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: 14px;
+      height: 25px;
+      line-height: 25px;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      width: 25px;
+      @include border-radius(50%);
+      @include translateY();
+    }
+  }
+  &.is-valid {
+    &:before {
+      bottom: 0;
+      background-color: $success;
+      content: "\f00c";
+      color: #fff;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: 14px;
+      height: 25px;
+      line-height: 25px;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      width: 25px;
+      @include border-radius(50%);
+      @include translateY();
+    }
+  }
+}
+/* bootstrap form group */
 
 /*==========*/
 /*  HEADER  */
@@ -645,15 +710,6 @@ select.form-control {
     background-color: transparent;
   }
 }
-.form-group label {
-  display: flex;
-  align-items: center;
-  .material-icons {
-    font-size: 20px !important;
-    height: 20px;
-    width: 20px;
-  }
-}
 .page-section {
   margin-top: 85px;
   z-index: 900;
@@ -737,7 +793,7 @@ select.form-control {
   @include border-radius(5px);
   @include box-shadow(0 5px 5px rgba($dark, 20%));
   &-body {
-    padding: 10px;
+    padding: 10px 2rem;
     padding-bottom: 0.75rem;
     img {
       width: 100%;

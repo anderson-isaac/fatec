@@ -9,8 +9,8 @@
 
 
     <title>Mural FATEC </title>
-    <base href="http://localhost/fatec/"/>
-    <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+    <!-- <base href="http://localhost/fatec/"/> -->
+    <base href="http://desenvolvimentomw.com.br/anderson/tests/"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
@@ -154,6 +154,7 @@
     <script>
       
       var prevScrollTop = getUrlParameter('scrolltop');
+      var id = getUrlParameter('id');
       var vagaURL = base + 'server/vaga.php';
       var vagaApp = new Vue({
         el: '#vaga',
@@ -163,14 +164,14 @@
             loading: true,
             errored: false,
             candidato_class: '',
-            id: getUrlParameter('id'),
+            id: id,
             previousPageScrolltop: prevScrollTop ? prevScrollTop : 0
           }
         },
         mounted () {
           axios
             .post(vagaURL, {
-              id: this.id
+              id: id
             })
             .then(response => {              
               this.vaga = response.data;              

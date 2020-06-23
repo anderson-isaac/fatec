@@ -249,35 +249,6 @@
     background-color: rgba($silver, 5%);
   }
 }
-.form-control {
-  background-color: #fff;
-  border: 2px solid $gray;
-  color: $dark !important;
-  text-align: left;
-  @include border-radius(5px !important);  
-  @include box-shadow(none);
-  &:focus {    
-    border-color: darken($gray, 15%) !important;
-    @include box-shadow(none !important);
-    // & ~ .input-group-append {
-    //   & > button {
-    //     color: #fff;
-    //   }
-    // }
-  }
-}
-.form-group {
-  position: relative;
-  & .btn {
-    width: 100%;
-  }
-  label {
-    display: inline-block;
-    margin: 0;
-    width: 100%;
-    text-align: left;
-  }
-}
 .input-group {
   & .form-control {
     width: 100%;

@@ -1,22 +1,76 @@
-<?php header('Content-Type: application/json'); ?>
-{                
-    "id" : 1,
-    "descricao" : "Lorem ipsum dolor sit amet.",
-    "cargo" : "Desenvolvedor Java",
-    "tipo" : "Estágio",
-    "valor_da_bolsa" : "1200",
-    "remuneracao" : "",
-    "diferencial" : "Todos os diferenciais possíveis",
-    "beneficios" : "Todos benefícios possíveis",
-    "empresa" : "Google",
-    "email" : "contato@google.com",
-    "whatsapp" : "(15) 99528-2205",
-    "situacao" : "Em aberto",
-    "data_postagem" : "21/10/2019",
-    "prazo_validade" : "31/11/2020",
-    "autor_id" : "5",
-    "autor_foto" : "https://s3.amazonaws.com/uifaces/faces/twitter/cyril_gaillard/128.jpg",
-    "autor_nome" : "Cyril Gaillard",    
-    "candidato" : true
-}
-<?php sleep(1); ?>
+<?php   include('admin/config/config.php');
+        header('Content-Type: application/json'); 
+
+        $resp = array();
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json);
+
+    
+        
+           $id = clean($data->id);
+           $q  = Query('SELECT * FROM vaga WHERE Vaga = '.$id.'',0);
+
+            
+    
+           if(mysqli_num_rows($q) > 0){
+             $r = mysqli_fetch_assoc($q);            
+   
+
+              $resp['id']        = $r['Vaga'];
+              $resp['tipo']        = $r['Tipo'];
+              $resp["cargo"]   = get('cargo',$r['Cargo']);
+              $resp["empresa"]   = get('empresa',$r['Empresa']);
+              $resp["postado"]   = formata_data($r['Data_postagem']);
+
+              $q_testa_usuario = Query('SELECT * FROM usuario_vaga WHERE Usuario = '.$_SESSION['User'].' AND Vaga = '.$id.'');
+              if(mysqli_num_rows($q_testa_usuario) > 0){
+                $r_testa_usuario = mysqli_fetch_assoc($q_testa_usuario);
+      
+                if($r_testa_usuario['Favorito']==1){
+                    $resp["favorito"]  = 'true';
+                }else{
+                    $resp["favorito"] = 'false';  
+                }
+
+                if($r_testa_usuario['Inscrito']==1){
+                    $resp["candidato"] = 'true';  
+                }else{
+                    $resp["candidato"] = 'false';  
+                }
+                      
+                
+              }else{
+                $resp["candidato"] = 'false';  
+                $resp["favorito"] = 'false';  
+              }
+
+              $resp["descricao"] = $r['Descricao']; 
+
+              $resp['valor_da_bolsa']     = $r['Valor_da_bolsa'];
+              $resp['remuneracao']        = $r['Remuneracao'];
+              $resp['tipo']        = $r['Tipo'];
+
+             $resp['diferencial']        = $r['Diferencial'];
+             $resp['beneficios']        = $r['Beneficios'];
+
+             $resp['email']        = $r['Email'];
+             $resp['whatsapp']        = $r['Whatsapp'];
+             $resp['situacao']        = $r['Situacao_da_vaga'];
+             $resp['prazo_validade']        = formata_data($r['Data_validade']);
+             
+             $q_user = Query('SELECT * FROM usuario WHERE Usuario = '.$r['Usuario'].'',0);
+             if(mysqli_num_rows($q_user) > 0){
+                
+                $r_user = mysqli_fetch_assoc($q_user);
+
+                $resp['autor_id'] = $r_user['Usuario'];
+                $resp['autor_foto'] = $Config['UrlServer'].'imagens/'.$r_user['Imagem'];
+                $resp['autor_nome'] = $r_user['Nome'];
+             
+             }
+
+             echo json_encode($resp);
+             exit; 
+           }
+        

@@ -1,39 +1,38 @@
-<?php header('Content-Type: application/json'); ?>
+<?php include('config/config.php'); 
+      header('Content-Type: application/json');
 
-{    
-    "draw": "2",
-    "recordsTotal": "4",
-    "recordsFiltered": "4",
-    "data": [
-        {
-            "Id_vaga" : "0001",
-            "Titulo" : "Estágio Desenvolvedor Web",
-            "Data_postagem" : "21/05/2020",
-            "Situacao" : "1",
-            "Acoes" : "<div class='btn-group'><button type='button' data-id='0001' class='btn btn-danger delete-this'><i class='fa fa-trash'></i></button><button type='button' data-id='0001' class='btn btn-info edit-this'><i class='fa fa-edit'></i></button></div>"
-        },
-        {
-            "Id_vaga" : "0002",
-            "Titulo" : "Estágio RH",
-            "Data_postagem" : "21/05/2020",
-            "Situacao" : "1",
-            "Acoes" : "<div class='btn-group'><button type='button' data-id='0001' class='btn btn-danger delete-this'><i class='fa fa-trash'></i></button><button type='button' data-id='0001' class='btn btn-info edit-this'><i class='fa fa-edit'></i></button></div>"
-        },
-        {
-            "Id_vaga" : "0003",
-            "Titulo" : "Desenvolvedor Java",
-            "Data_postagem" : "21/05/2020",
-            "Situacao" : "1",
-            "Acoes" : "<div class='btn-group'><button type='button' data-id='0001' class='btn btn-danger delete-this'><i class='fa fa-trash'></i></button><button type='button' data-id='0001' class='btn btn-info edit-this'><i class='fa fa-edit'></i></button></div>"
-        },
-        {
-            "Id_vaga" : "0004",
-            "Titulo" : "Assistente de TI",
-            "Data_postagem" : "21/05/2020",
-            "Situacao" : "1",
-            "Acoes" : "<div class='btn-group'><button type='button' data-id='0001' class='btn btn-danger delete-this'><i class='fa fa-trash'></i></button><button type='button' data-id='0001' class='btn btn-info edit-this'><i class='fa fa-edit'></i></button></div>"
+      $resposta = array();
+      $resposta['draw'] = 0;
+      $resposta['recordsTotal'] = 0;
+      $resposta['recordsFiltered'] = 0;
+      $resposta['data'] =  array();
+    
+      $Tipo = 0;
+    
+      if((isset($_SESSION['Usuario']) &&  $_SESSION['Usuario']!='') && (isset($_SESSION['Tipo']) &&  $_SESSION['Tipo']!='' && $_SESSION['Tipo']==1)){
+        $q = Query('SELECT * FROM vaga WHERE Usuario = '.$_SESSION['Usuario'].' ORDER BY Vaga DESC',0);
+        $total_r = mysqli_num_rows($q);
+        if($total_r > 0){
+
+            $resposta['draw'] = $total_r;
+            $resposta['recordsTotal'] = $total_r;
+            $resposta['recordsFiltered'] = $total_r;
+               
+            while($r = mysqli_fetch_assoc($q)){
+
+                $resposta_aux = array();
+    
+                $resposta_aux['Id_vaga']         = $r['Vaga'];
+                $resposta_aux['Titulo']             = get('cargo',$r['Cargo']);
+                $resposta_aux['Data_postagem']   = formata_data($r['Data_postagem']);
+                
+                $resposta_aux['Situacao']        = get_situacao($r['Situacao']);
+                
+                $resposta_aux['Acoes']           = "<div class='btn-group'><button type='button' data-id='".$r['Vaga']."' class='btn btn-danger delete-this'><i class='fa fa-trash'></i></button><button type='button' data-id='".$r['Vaga']."' class='btn btn-info edit-this'><i class='fa fa-edit'></i></button></div>";
+                
+                $resposta['data'][] = $resposta_aux;        
+          }
         }
-    ]
-}
+      }
 
-<?php sleep(3); ?>
+      echo json_encode($resposta);

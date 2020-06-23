@@ -10,8 +10,8 @@
 
 
   <title>Mural FATEC </title>
-  <base href="http://localhost/fatec/"/>
-  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
+  <!-- <base href="http://localhost/fatec/"/> -->
+  <base href="http://desenvolvimentomw.com.br/anderson/tests/"/>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
   <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
@@ -136,12 +136,15 @@
           e.preventDefault();
           var _t = $(this);
           var submit_button = $(this).find('button:submit');
+          var formData = new FormData(_t[0]);
           _t.find('.alert').hide();
           $.ajax({
             url: 'server/set-conta.php',
             type: 'post',
             dataType: 'json',
-            data: _t.serializeArray(),
+            data: formData,
+            contentType : false,
+            processData : false,
             beforeSend: function() {
               submit_button.html("<i class='fa fa-refresh fa-spin'></i>");
               _t.find('.alert').html('').removeClass('alert-error');

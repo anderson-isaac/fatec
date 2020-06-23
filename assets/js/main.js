@@ -707,13 +707,60 @@ $(function() {
   });
 
   /**
-   * Adicionar um item aos favoritos
+   * Adicionar uma vaga aos favoritos
    */
   $(document).on('click', '.favoritar', function() {
     var _t = $(this);
     var id = $(this).data('id');
     if (!id) return false;
     var url = base + 'server/favoritar.php';
+    $.ajax({
+      url: url,
+      data: "&id=" + id,
+      method: "post",
+      dataType: "json",
+      beforeSend: function() {
+        _t.find('i.fa')
+          .removeClass('fa-star-o')
+          .addClass('fa-refresh fa-spin');
+      },
+      success: function(res) {
+        if (res.status == "success") {
+          _t.removeClass("favoritar")
+            .addClass("active")
+            .html("<i class='fa fa-star'></i> Favorito");
+        } else {
+          _t.find('i.fa')
+          .removeClass('fa-refresh fa-spin')
+          .addClass('fa-star-o');
+        }
+        swal({
+          icon : res.status,
+          title : res.title,
+          text : res.mensagem
+        })
+      },
+      error: function() {
+        _t.find('i.fa')
+        .removeClass('fa-refresh fa-spin')
+        .addClass('fa-star-o');
+        swal({
+          icon : "error",
+          title : "Erro",
+          text : "Não foi possível adicionar esse item aos favoritos"
+        })
+      }
+    });
+  });
+
+  /**
+   * Adicionar um aviso aos favoritos
+   */
+  $(document).on('click', '.favoritar-aviso', function() {
+    var _t = $(this);
+    var id = $(this).data('id');
+    if (!id) return false;
+    var url = base + 'server/favoritar-aviso.php';
     $.ajax({
       url: url,
       data: "&id=" + id,
@@ -805,10 +852,5 @@ $(function() {
 });
 
 window.onload = function() {
-
-  $('.loader').fadeOut(300, function() {
-    if ($('.wow').length) {
-      new WOW().init();
-    }
-  },0);
+  $('.loader').fadeOut();
 }

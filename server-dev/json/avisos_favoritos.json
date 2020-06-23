@@ -1,0 +1,41 @@
+
+{
+    "avisos" : [        
+        {
+            "id" : 3,
+            "capa" : "http://picsum.photos/id/32/600/400",
+            "autor" : 3,
+            "autor_nome" : "Cheyanne Huels",
+            "autor_foto" : "https://s3.amazonaws.com/uifaces/faces/twitter/theonlyzeke/128.jpg",
+            "titulo" : "Atque necessitatibus cumque aperiam soluta omnis fugit.",
+            "texto" : "Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione. Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione. Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione.  ",
+            "resumo" : "Et aliquid molestias. Assumenda fuga eligendi occaecati laboriosam ut asperiores non perferendis doloribus. Quos sapiente consequatur autem. Ut qui sapiente. Tempore enim beatae voluptas ducimus et dolor quia excepturi iusto.",
+            "postado" : "20/04/2020",
+            "favorito" : true
+        }, 
+        {
+            "id" : 4,
+            "capa" : "",
+            "autor" : 4,
+            "autor_nome" : "Donato Pacocha",
+            "autor_foto" : "https://s3.amazonaws.com/uifaces/faces/twitter/jcubic/128.jpg",
+            "titulo" : "Quis non minus sint distinctio voluptas quo tempora nulla eum.",
+            "texto" : "Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione. Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione. Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione.  ",
+            "resumo" : "Nostrum nemo saepe modi est omnis esse sed. Sunt et voluptatem illum. Sapiente placeat ea repellat dolor consequatur. Sint sit dolorem quas doloremque velit nisi earum architecto nihil.",
+            "postado" : "20/04/2020",
+            "favorito" : true
+        }, 
+        {
+            "id" : 5,
+            "capa" : "http://picsum.photos/id/34/600/400",
+            "autor" : 5,
+            "autor_nome" : "Oran Hackett",
+            "autor_foto" : "https://s3.amazonaws.com/uifaces/faces/twitter/nelsonjoyce/128.jpg",
+            "titulo" : "Expedita aut adipisci dicta sunt molestias aliquid.",
+            "texto" : "Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione. Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione. Sit sed aut dignissimos reprehenderit est omnis ipsum iusto. Error ratione ea nulla et ut eligendi. Aperiam odit voluptas iusto voluptates in laudantium ipsum. Numquam numquam ratione.  ",
+            "resumo" : "Ut nobis et iusto et sequi consequatur. Delectus neque ratione eligendi et. Quae doloremque perspiciatis possimus veritatis nihil aut numquam est. Id laudantium quo voluptatem quis inventore quo laudantium quaerat fugiat. Dolorem maxime in dolor tempora magnam doloribus ipsum in sequi. Cupiditate sint ea.",
+            "postado" : "20/04/2020",
+            "favorito" : true
+        }
+    ]  
+}

@@ -3,10 +3,8 @@
         {
             "id" : 1,
             "empresa" : "Tillman - Keebler",
-            "cargo" : "Internal Research Director",
+            "vaga" : "Internal Research Director",
             "postado" : "20/04/2020",
-            "tipo" : 0,
-            "valor_da_bolsa" : "1.200,00",
             "favorito" : true,
             "candidato" : true,
             "descricao" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus nulla debitis magnam alias. Unde laboriosam repellat placeat adipisci pariatur eaque voluptas dicta ullam illo minima consequatur suscipit, sequi possimus?| "
@@ -14,10 +12,8 @@
         {
             "id" : 2,
             "empresa" : "Pfeffer Inc",
-            "cargo" : "Direct Program Director",
+            "vaga" : "Direct Program Director",
             "postado" : "20/04/2020",
-            "tipo" : 1,
-            "remuneracao" : "1.200,00",
             "favorito" : false,
             "candidato" : false,
             "descricao" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus nulla debitis magnam alias. Unde laboriosam repellat placeat adipisci pariatur eaque voluptas dicta ullam illo minima consequatur suscipit, sequi possimus?| "
@@ -25,10 +21,8 @@
         {
             "id" : 3,
             "empresa" : "Buckridge Group",
-            "cargo" : "Human Mobility Representative",
+            "vaga" : "Human Mobility Representative",
             "postado" : "20/04/2020",
-            "tipo" : 1,
-            "remuneracao" : "1.200,00",
             "favorito" : false,
             "candidato" : false,
             "descricao" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus nulla debitis magnam alias. Unde laboriosam repellat placeat adipisci pariatur eaque voluptas dicta ullam illo minima consequatur suscipit, sequi possimus?| "
@@ -36,10 +30,8 @@
         {
             "id" : 4,
             "empresa" : "Johnson, Toy and Mills",
-            "cargo" : "Dynamic Operations Agent",
+            "vaga" : "Dynamic Operations Agent",
             "postado" : "20/04/2020",
-            "tipo" : 0,
-            "valor_da_bolsa" : "1.200,00",
             "favorito" : true,
             "candidato" : false,
             "descricao" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus nulla debitis magnam alias. Unde laboriosam repellat placeat adipisci pariatur eaque voluptas dicta ullam illo minima consequatur suscipit, sequi possimus?| "
@@ -47,10 +39,8 @@
         {
             "id" : 5,
             "empresa" : "Farrell, Will and Mosciski",
-            "cargo" : "Legacy Applications Manager",
+            "vaga" : "Legacy Applications Manager",
             "postado" : "20/04/2020",
-            "tipo" : 0,
-            "valor_da_bolsa" : "1.200,00",
             "favorito" : false,
             "candidato" : true,
             "descricao" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus nulla debitis magnam alias. Unde laboriosam repellat placeat adipisci pariatur eaque voluptas dicta ullam illo minima consequatur suscipit, sequi possimus?| "
@@ -58,10 +48,8 @@
         {
             "id" : 6,
             "empresa" : "Emmerich and Sons",
-            "cargo" : "Human Configuration Facilitator",
+            "vaga" : "Human Configuration Facilitator",
             "postado" : "20/04/2020",
-            "tipo" : 1,
-            "remuneracao" : "1.200,00",
             "favorito" : false,
             "candidato" : true,
             "descricao" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus nulla debitis magnam alias. Unde laboriosam repellat placeat adipisci pariatur eaque voluptas dicta ullam illo minima consequatur suscipit, sequi possimus?| "
