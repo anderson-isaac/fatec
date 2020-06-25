@@ -83,6 +83,32 @@ function loadComponents() {
 
 $(function() {
 
+    $.ajax({
+      url : base + "server/verifica-login.php",
+      type : 'post',
+      dataType : 'json',
+      success : function(res) {
+        var n = $('#login-form').length;
+        if (res.status == false && !n) {
+          document.location.href = base + "index.html";
+        }
+      }
+    });
+
+    $(document).on("click", ".logout", function(e) {
+      e.preventDefault();
+      $.ajax({
+        url : base + "server/verifica-login.php",
+        type : 'post',
+        dataType : 'json',
+        success : function(res) {
+          if (res == 1) {
+            document.location.href = base + "index.html";
+          }
+        }
+      });
+    });
+
     /**
      * jQuery Masks
      */
@@ -102,29 +128,46 @@ $(function() {
     $(".cpf-field").mask('000.000.000-00');
     $(".cnpj-field").mask('00.000.000/0000-00');    
     $(".date-field").mask('00/00/0000');    
-   $('.money').mask('#.##0,00', {reverse: true});    
+    $('.money').mask('#.##0,00', {reverse: true});    
     
-   $.fn.etapas = function(direcao) {
-    var _t = this;
-    var active_index;
-    var etapas_length = _t.find('> div').length;
-    if (direcao == 'next') {
-        active_index = _t.find('> div.active').index();
-        console.log(active_index + " " + etapas_length);
-        if (active_index < (etapas_length - 1)) {
-            _t.find('> div.active').removeClass('active');
-            _t.find('> div').eq(active_index + 1).addClass('active');
-        }
+    $.fn.etapas = function(direcao) {
+      var _t = this;
+      var active_index;
+      var etapas_length = _t.find('> div').length;
+      if (direcao == 'next') {
+          active_index = _t.find('> div.active').index();          
+          if (active_index < (etapas_length - 1)) {
+              _t.find('> div.active').removeClass('active');
+              _t.find('> div').eq(active_index + 1).addClass('active');
+          }
+      }
+      if (direcao == 'prev') {
+          active_index = _t.find('> .active').index();
+          if (active_index > 0) {
+              _t.find('> div.active').removeClass('active');
+              _t.find('> div').eq(active_index - 1).addClass('active');
+          }
+      }
+      return true;
     }
-    if (direcao == 'prev') {
-        active_index = _t.find('> .active').index();
-        if (active_index > 0) {
-            _t.find('> div.active').removeClass('active');
-            _t.find('> div').eq(active_index - 1).addClass('active');
+
+    jQuery.fn.extend({
+      alert: function (text, type) {
+        var al = $(this).find('.alert');
+        al.html(text);
+        if (type == 'success') {
+          al.addClass("alert-success");
+        } else if (type == 'error') {
+          al.addClass("alert-error");
         }
-    }
-    return true;
-  }
+        al.show();
+      },
+      alertHide: function () {
+        var al = $(this).find('.alert');
+        al.hide();
+      }
+    });
+
 
     /**
      * Set Sticky Header
@@ -270,8 +313,7 @@ $(function() {
      * Nav component
      */
     if ($('#nav-component').length) {
-      $(document).on('click', '#nav-component .nav-link', function() {
-        console.log('nav component click');
+      $(document).on('click', '#nav-component .nav-link', function() {        
         var tab = $(this).data('tab');
         if ($(this).hasClass('active')) {
           return false;

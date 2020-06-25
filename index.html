@@ -88,8 +88,6 @@
     <script>
       $(function() {
 
-        $('form').validate();
-
         $(document).on('submit', '#login-form', function(e) {
           e.preventDefault();
           var _t = $(this);
@@ -108,7 +106,7 @@
               if (json.status == 1) {                
                 if (json.tipo_acesso == 'aluno') {
                   console.log('aluno');
-                  // document.location.href = './mural.html';
+                  document.location.href = './mural.html';
                 } else {
                   console.log('professor');
                   document.location.href = './index-admin.html';

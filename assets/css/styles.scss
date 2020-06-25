@@ -41,6 +41,8 @@ hr {
 }
 .alert {
   text-align: center;
+  width: 100%;
+  display: block;
 }
 .link-to {
   cursor: pointer;
@@ -96,16 +98,14 @@ button {
     color: $dark !important;
   }
 }
-
 /* bootstrap form group */
 .form-group {
   position: relative;
   .form-control {
     background-color: transparent;
-    border: none;
-    border-bottom: 2px solid $secondary;
+    border: 1px solid $dark;    
     font-size: 16px;
-    font-weight: bold;
+    // font-weight: bold;
     margin-bottom: 2rem;    
     padding-right: 30px;
     @include border-radius(0);
@@ -116,6 +116,9 @@ button {
       border-color: #000;
       @include box-shadow(none !important);
     }
+  }
+  select.form-control {
+    margin-bottom: 0;
   }
   &.has-error {
     .form-control {
@@ -133,7 +136,7 @@ button {
       position: absolute;
     }
     &:before {
-      bottom: 0;
+      top: 47px;
       background-color: $error;
       content: "\f00d";
       color: #fff;
@@ -143,34 +146,22 @@ button {
       height: 25px;
       line-height: 25px;
       position: absolute;
-      right: 0;
+      right: 5px;
       text-align: center;
       width: 25px;
       @include border-radius(50%);
       @include translateY();
     }
   }
-  &.is-valid {
-    &:before {
-      bottom: 0;
-      background-color: $success;
-      content: "\f00c";
-      color: #fff;
-      display: inline-block;
-      font: normal normal normal 14px/1 FontAwesome;
-      font-size: 14px;
-      height: 25px;
-      line-height: 25px;
-      position: absolute;
-      right: 0;
-      text-align: center;
-      width: 25px;
-      @include border-radius(50%);
-      @include translateY();
+  &-select {
+    &.has-error {
+      &:before {
+        right: 22px;
+      }
     }
   }
 }
-/* bootstrap form group */
+
 
 /*==========*/
 /*  HEADER  */

@@ -102,11 +102,11 @@
 
             <div class="form-group">
               <label>Descrição</label>
-              <textarea name="Descricao" id="" rows="7" class="form-control" required="required"></textarea>
               <small>Breve descrição da vaga</small>
+              <textarea name="Descricao" id="" rows="7" class="form-control" required="required"></textarea>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-group-select">
               <label>Cargo</label>
               <select name="Cargo" class="form-control" required="required"></select>
               <a href="#novo-cargo" data-toggle="collapse">Adicionar novo cargo</a>
@@ -118,7 +118,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-group-select">
               <label>Tipo</label>
               <select name="Tipo" class="form-control" data-toggle="select" data-target="#tipo-toggle">
                 <option value="0" selected>Estágio</option>
@@ -147,7 +147,7 @@
               <textarea name="Beneficios" rows="4" class="form-control"></textarea>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-group-select">
               <label>Empresa</label>
               <select name="Empresa" class="form-control" required="required"></select>
               <a href="#nova-empresa" data-toggle="collapse">Adicionar nova empresa</a>
@@ -169,7 +169,7 @@
               <input type="text" name="Whatsapp" class="form-control cel-field">
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-group-select">
               <label>Situação da vaga</label>
               <select name="Situacao" id="" class="form-control">
                 <option value="0">Fechada</option>
@@ -178,17 +178,15 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label>Data da postagem</label>
-              <input type="text" name="Data_da_postagem" class="form-control date-field">
-            </div>
+            <input type="hidden" name="Data_da_postagem" class="form-control date-field" readonly="readonly">
 
             <div class="form-group">
               <label>Prazo de validade</label>
-              <input type="text" name="Prazo_de_validade" class="form-control date-field">
+              <input type="text" name="Prazo_de_validade" class="form-control date-field" required="required">
             </div>
 
 
+            <div class="alert" style="display: none;"></div>
 
           </div>
           
@@ -264,11 +262,26 @@
 
     $(function() {
 
+      $(document).on('shown.bs.modal', '.modal', function () {
+        $(this).find('input').trigger('input');
+      });
+
+      $(document).on('shown.bs.modal', '#vaga-modal', function () {
+        $(this).addClass('novo');
+      });
+
+      $(document).on('change', 'form', function() {
+        if ($(this).valid()) {
+          $(this).alertHide();
+        }
+      })
+
       // Misc
       $(document).on('change', '[data-toggle=\"select\"]', function() {
         let _t = $(this);
         let area = _t.data('target');
         let item = _t.val();
+        $(area).find('input').val('');
         $(area).find('[data-value]').removeClass('active');
         $(area).find('[data-value] input').prop('disabled', true);
         $(area).find('[data-value=\"' + item + '\"]').addClass('active');
@@ -393,6 +406,7 @@
       });
 
       $('#vaga-modal').on('shown.bs.modal', function (e) {
+        $('#vaga-modal').alertHide();
         $('#form-vaga').validate({
           rules : {
             Data_da_postagem : {
@@ -401,6 +415,17 @@
             Prazo_de_validade : {
               testDate2 : true
             }
+          },
+          focusInvalid: false,
+          invalidHandler: function(form, validator) {
+
+            if (!validator.numberOfInvalids()) {
+              $('#vaga-modal').alertHide();
+              return;
+            } 
+
+            $('#vaga-modal').alert('Existem campos não preenchidos', 'error');
+
           }
         });
       });
@@ -505,6 +530,7 @@
             $("#form-vaga [name='Data_da_postagem']").val(res.data_postagem);
             $("#form-vaga [name='Prazo_de_validade']").val(res.prazo_validade);            
             $('#vaga-modal').modal("show");
+            $('#vaga-modal').removeClass('novo');
           }
         });
       });
@@ -514,6 +540,11 @@
         let _t = $(this);
         let _btn = _t.find('button:submit').html();
         let valid = _t.valid();
+        if (_t.closest('.modal').hasClass('novo')) {
+          let today = new Date();        
+          today = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+          _t.find('[name=\"Data_da_postagem\"]').val(today);                    
+        }
         if (!valid) return;
         $.ajax({
           url : base + 'server/admin/add-vaga.php',
@@ -534,7 +565,7 @@
             } else {
               swal({
                 title : "Erro",
-                text : "Não foi possível adicionar uma nova vaga.",
+                text : res.mensagem,
                 icon : "error"
               })
             }

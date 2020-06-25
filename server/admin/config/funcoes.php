@@ -178,8 +178,8 @@
 	}
 
 	function Conectar($Servidor, $Usuario, $Senha, $Banco) {
-		$Conexao = mysqli_connect($Servidor,$Usuario,$Senha,$Banco) or die("ERRO: Configuração inválida de banco de dados.");
-		//mysql_select_db($Banco, $Conexao) or die("ERRO: Banco não encontrado");
+		$Conexao = mysqli_connect($Servidor,$Usuario,$Senha,$Banco) or die("ERRO: Configuraï¿½ï¿½o invï¿½lida de banco de dados.");
+		//mysql_select_db($Banco, $Conexao) or die("ERRO: Banco nï¿½o encontrado");
 		mysqli_set_charset($Conexao,"utf8");
 		return $Conexao;
 	}   
@@ -402,6 +402,7 @@
         $file = UPLOAD_DIR . uniqid() . '.jpg';
         $success = file_put_contents($file, $data);
         return $success;
-    }
+	}
+	
 
 ?>

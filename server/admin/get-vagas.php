@@ -14,7 +14,7 @@
         $total_r = mysqli_num_rows($q);
         if($total_r > 0){
 
-            $resposta['draw'] = $total_r;
+            $resposta['draw'] = $_POST['draw'];
             $resposta['recordsTotal'] = $total_r;
             $resposta['recordsFiltered'] = $total_r;
                
@@ -24,10 +24,8 @@
     
                 $resposta_aux['Id_vaga']         = $r['Vaga'];
                 $resposta_aux['Titulo']             = get('cargo',$r['Cargo']);
-                $resposta_aux['Data_postagem']   = formata_data($r['Data_postagem']);
-                
-                $resposta_aux['Situacao']        = get_situacao($r['Situacao']);
-                
+                $resposta_aux['Data_postagem']   = formata_data($r['Data_postagem']);                
+                $resposta_aux['Situacao']        = get_situacao($r['Situacao_da_vaga']);                
                 $resposta_aux['Acoes']           = "<div class='btn-group'><button type='button' data-id='".$r['Vaga']."' class='btn btn-danger delete-this'><i class='fa fa-trash'></i></button><button type='button' data-id='".$r['Vaga']."' class='btn btn-info edit-this'><i class='fa fa-edit'></i></button></div>";
                 
                 $resposta['data'][] = $resposta_aux;        
