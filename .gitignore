@@ -1,3 +1,6 @@
 TG/
 curriculuns/
-server/dev
+server/dev/
+server-dev/
+server-backup/
+node_modules/

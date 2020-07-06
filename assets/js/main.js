@@ -1,15 +1,13 @@
-var user = {
-  id : '',
-  nome : ''
-}
-
 var base = $('base').attr('href');
 
 function getUrlParameter(sParam) {
-  var sPageURL = window.location.search.substring(1),
-      sURLVariables = sPageURL.split('&'),
-      sParameterName,
-      i;
+
+  "use strict";
+
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
 
   for (i = 0; i < sURLVariables.length; i++) {
       sParameterName = sURLVariables[i].split('=');
@@ -33,40 +31,6 @@ function captchaCallback() {
   }
 }
 
-/** Limpa CEP */
-function clear_cep(_parent) {
-  $(_parent).find(".fill-rua").val('').blur();
-  $(_parent).find(".fill-bairro").val('').blur();
-  $(_parent).find(".fill-cidade").val('').blur();
-  $(_parent).find(".fill-uf").val('').blur();
-}
-
-/** Preenche CEP */
-function getAddress(cep, _parent) {
-  clear_cep(_parent);
-  cep = cep.replace(/\D/g, '');
-  if (cep != "") {
-    var validacep = /^[0-9]{8}$/;
-    if (validacep.test(cep)) {
-      $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-        if (!("erro" in dados)) {
-          $(_parent).find(".fill-rua").val(dados.logradouro).blur();
-          $(_parent).find(".fill-bairro").val(dados.bairro).blur();
-          $(_parent).find(".fill-cidade").val(dados.localidade).blur();
-          $(_parent).find(".fill-uf").val(dados.uf).blur();
-        } else {
-          clear_cep(_parent);
-          swal("Erro!", "CEP não encontrado.", "error");
-        }
-      });
-    } else {
-      clear_cep(_parent);
-      swal("Erro!", "Formato de CEP inválido.", "error");
-    }
-  } else {
-    clear_cep(_parent);
-  }
-}
 
 /**
  * Carrega os componentes principais: header, nav, footer
@@ -509,7 +473,7 @@ $(function() {
 
       if ($('.see-password').length) {
         $(document).on('click', '.see-password', function() {
-          let parent = $(this).closest('.form-group');
+          var parent = $(this).closest('.form-group');
           if ($(this).find('.fa').hasClass('fa-square-o')) {
             $(this).find('.fa').removeClass('fa-square-o').addClass('fa-check-square');
             parent.find('input').attr('type', 'text');
@@ -881,9 +845,9 @@ $(function() {
 
     // Configurações para exibir Spinner em botões
     btnLoader: function ($state) {  
-      let _t = $(this).find('button:submit');    
-      let btn_html = _t.html(); 
-      let btn_width = _t.width(); 
+      var _t = $(this).find('button:submit');    
+      var btn_html = _t.html(); 
+      var btn_width = _t.width(); 
       if ($state == "init") {
         _t.attr("data-html", btn_html);        
         _t.width(btn_width); 
