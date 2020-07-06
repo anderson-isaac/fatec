@@ -39,7 +39,7 @@
         <div class="card">
           <div class="card-body">
             <div class="profile-picture">
-              <img src="assets/images/profile.jpg" alt="">
+              <img :src="`server/imagens/${ info.foto }`" alt="">
             </div>
             <div class="card-title">
               {{ info.nome }}
@@ -70,10 +70,10 @@
 
   <script>
 
-    var autorURL = base + 'server/admin/get-admin.php';   
+    var autorURL = base + 'server/admin/get-autor.php';   
     var autorId = getUrlParameter('id');
     var app = new Vue({
-      el: '#admin',
+      el: '#admin', 
       data () {
         return {
           info: null,

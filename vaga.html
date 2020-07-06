@@ -60,11 +60,11 @@
                               </tr>
                               <tr v-if="vaga.tipo == 'Estágio'">
                                   <th>Valor da Bolsa</th>
-                                  <td>{{ vaga.valor_da_bolsa }}</td>
+                                  <td class="money">{{ vaga.valor_da_bolsa }}</td>
                               </tr>
                               <tr v-else>
                                 <th>Remuneração</th>
-                                <td>{{ vaga.remuneracao }}</td>
+                                <td class="money">{{ vaga.remuneracao }}</td>
                               </tr>
                               <tr>
                                 <th>Diferencial</th>
@@ -83,12 +83,8 @@
                                 <td>{{ vaga.whatsapp }}</td>
                               </tr>
                               <tr>
-                                <th>Situação</th>
-                                <td>{{ vaga.situacao }}</td>
-                              </tr>
-                              <tr>
                                 <th>Data da postagem</th>
-                                <td>{{ vaga.data_postagem }}</td>
+                                <td>{{ vaga.postado }}</td>
                               </tr>
                               <tr>
                                 <th>Prazo de validade</th>
@@ -103,9 +99,9 @@
                         <hr>             
                         <h5 class="card-title">                    
                             <div class="author">
-                                <img :src="vaga.autor_foto" alt="" class="profile-photo">
+                                <img :src="`server/imagens/${vaga.autor_foto}`" alt="" class="profile-photo">
                                 <small>
-                                    <a :href="`professor.html?id=${ vaga.autor_id }`">
+                                    <a :href="`autor.html?id=${ vaga.autor_id }`">
                                         {{ vaga.autor_nome }}
                                     </a>
                                 </small>
@@ -182,6 +178,9 @@
             })
             .finally(() => {
               this.loading = false;
+              setTimeout(function() {
+                $('.money').mask('#.##0,00', {reverse: true});
+              }, 300)
             })
         }
       });      

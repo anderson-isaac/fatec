@@ -97,7 +97,7 @@
 		//$mail->AddAttachment($_FILES['arquivo']['tmp_name'], $_FILES['arquivo']['name']);
 	   		
 		$mail->AddAddress($email,$email); 		        
-	    // $mail->AddAddress('lucas@makeweb.com.br',"Contato");
+	    // $mail->AddAddress('anderson.rodz@gmail.com',"Contato");
 		if($mail->Send()){
 			return 1;
 		}else{ 

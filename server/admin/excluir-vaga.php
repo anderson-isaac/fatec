@@ -6,7 +6,7 @@
 	if((isset($_SESSION['Usuario']) && $_SESSION['Usuario']!='') && (isset($_SESSION['Tipo']) &&  $_SESSION['Tipo']==1) && (isset($_POST['Id_vaga']) && $_POST['Id_vaga']!='')){
 
 		$id_vaga = clean($_POST['Id_vaga']);
-		$q = Query('SELECT * FROM vaga WHERE Vaga = '.$id_vaga.' AND Usuario = '.$_SESSION['Usuario'].'',0);
+		$q = Query('SELECT * FROM vaga WHERE Vaga = '.$id_vaga.'',0);
 		    
 		if(mysqli_num_rows($q) > 0){
 			Query('DELETE FROM vaga WHERE Vaga = '.$id_vaga.'',0);

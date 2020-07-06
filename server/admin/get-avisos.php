@@ -10,11 +10,11 @@
       $Tipo = 0;
     
       if((isset($_SESSION['Usuario']) &&  $_SESSION['Usuario']!='') && (isset($_SESSION['Tipo']) &&  $_SESSION['Tipo']!='' && $_SESSION['Tipo']==1)){
-        $q = Query('SELECT * FROM aviso WHERE Usuario = '.$_SESSION['Usuario'].' ORDER BY Aviso DESC',0);
+        $q = Query('SELECT * FROM aviso ORDER BY Aviso DESC',0);
         $total_r = mysqli_num_rows($q);
         if($total_r > 0){
 
-            $resposta['draw'] = $total_r;
+            $resposta['draw'] = $_POST['draw'];
             $resposta['recordsTotal'] = $total_r;
             $resposta['recordsFiltered'] = $total_r;
                

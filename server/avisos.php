@@ -18,7 +18,7 @@
               $r_aux = array();   
               
               $r_aux['id']        = $r['Aviso'];
-              $r_aux['capa'] = $Config['UrlServer'].'imagens/'.$r['Imagem'];
+              $r_aux['capa'] = $r['Imagem'];
 
 
             $q_user = Query('SELECT * FROM usuario WHERE Usuario = '.$r['Usuario'].'',0);
@@ -27,7 +27,7 @@
                 $r_user = mysqli_fetch_assoc($q_user);
 
                 $r_aux['autor_id'] = $r_user['Usuario'];
-                $r_aux['autor_foto'] = $Config['UrlServer'].'imagens/'.$r_user['Imagem'];
+                $r_aux['autor_foto'] = $r_user['Imagem'];
                 $r_aux['autor_nome'] = $r_user['Nome'];
              
              }
@@ -46,13 +46,15 @@
 
               $arr['avisos'][] = $r_aux;   
         }        
-    }else{
-        $q = Query('SELECT * FROM aviso as av WHERE av.Aviso NOT IN (SELECT Aviso FROM usuario_aviso_favorito WHERE Usuario = '.$_SESSION['Usuario'].') ORDER BY Aviso DESC LIMIT 6',0);
-        while($r = mysqli_fetch_assoc($q)){   
-              $r_aux = array();
+    }else{    
+        $q = Query('SELECT * from aviso');
+        while($r = mysqli_fetch_assoc($q)){ 
+          
+            // print_r($r);
+            $r_aux = array();
               
               $r_aux['id']        = $r['Aviso'];
-              $r_aux['capa'] = $Config['UrlServer'].'imagens/'.$r['Imagem'];
+              $r_aux['capa'] = $r['Imagem'];
 
             $q_user = Query('SELECT * FROM usuario WHERE Usuario = '.$r['Usuario'].'',0);
              if(mysqli_num_rows($q_user) > 0){
@@ -60,7 +62,7 @@
                 $r_user = mysqli_fetch_assoc($q_user);
 
                 $r_aux['autor_id'] = $r_user['Usuario'];
-                $r_aux['autor_foto'] = $Config['UrlServer'].'imagens/'.$r_user['Imagem'];
+                $r_aux['autor_foto'] = $r_user['Imagem'];
                 $r_aux['autor_nome'] = $r_user['Nome'];
              
              }
@@ -70,15 +72,23 @@
              $r_aux['resumo']        = $r['Resumo'];
              $r_aux['postado']        = formata_data($r['Data']);
 
-              
-              if($r["Favorito"]==1){
+            $fav_query = 'SELECT * FROM `usuario_aviso_favorito` AS uf WHERE uf.Aviso = '. $r_aux['id'] . ' AND uf.Usuario = ' .$_SESSION['Usuario'];
+            $q_fav = Query($fav_query, 0);
+            if(mysqli_num_rows($q_fav) > 0){
+                
+              $r_fav = mysqli_fetch_assoc($q_fav);
+              if($r_fav['Favorito']==1){
                 $r_aux["favorito"]  = true;  
-              }else{
+              } else{
                 $r_aux["favorito"]  = false; 
               }
 
-              $arr['avisos'][] = $r_aux; 
-              $arr['vagas'][] = $r_aux;   
+            } else{
+              $r_aux["favorito"]  = false; 
+            }
+              
+
+              $arr['avisos'][] = $r_aux;               
         } 
     }
 

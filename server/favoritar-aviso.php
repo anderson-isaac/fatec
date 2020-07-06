@@ -1,17 +1,16 @@
 <?php   include('admin/config/config.php');
         header('Content-Type: application/json');   
-    
+        
         $id   = 0;
         $resp = array();
 
-        if(isset($_POST['id']) && $_POST['id']!='' && is_numeric($_POST['id'])){
+        if(isset($_POST['id']) && $_POST['id']!=''){
             $id_param = clean($_POST['id']);
         }else{
             $resp['status'] = 'error';
             echo json_encode($resp);
             exit;
         }
- 
 
         $q = Query('SELECT * FROM usuario_aviso_favorito WHERE Aviso = '.$id_param.' AND Usuario = '.$_SESSION['Usuario'].'');
         if(mysqli_num_rows($q)==0){
@@ -40,5 +39,4 @@
             echo json_encode($resp);
             exit;
         }
-      
    

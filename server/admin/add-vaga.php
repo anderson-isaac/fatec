@@ -36,13 +36,30 @@ if((isset($_SESSION['Usuario']) &&  $_SESSION['Usuario']!='') && (isset($_SESSIO
 	$data_postagem     = (isset($_POST['Data_da_postagem']) && $_POST['Data_da_postagem'] != "") ? data_americana(clean($_POST['Data_da_postagem'])) : "";
 	$prazo_de_validade = (isset($_POST['Prazo_de_validade']) && $_POST['Prazo_de_validade'] != "") ? data_americana(clean($_POST['Prazo_de_validade'])) : "";
 
-	$id = Insert('INSERT INTO `vaga`(`Descricao`, `Cargo`, `Tipo`, `Remuneracao`, `Valor_da_bolsa`, `Diferencial`, `Beneficios`, `Empresa`, `Email`, `Whatsapp`, `Situacao_da_vaga`, `Data_postagem`, `Data_validade`, `Usuario`) VALUES ("'.$descricao.'",'.$cargo.','.$tipo.',"'.$remuneracao.'","'.$valor_da_bolsa.'","'.$diferencial.'","'.$beneficios.'",'.$empresa.',"'.$email.'","'.$whatsapp.'","'.$situacao.'","'.$data_postagem.'","'.$prazo_de_validade.'",'.$_SESSION['Usuario'].')');    
-	     
-	if($id!=0){
-		$resp['status']  = 'success';	
-	}else{
-		$resp['status']  = 'error';	
+	if (isset($_POST['Id']) && $_POST['Id'] != 0) {
+		$id = $_POST['Id'];
+		$query_update = 'UPDATE `vaga` SET Descricao = "'.$descricao.'", Cargo = "'.$cargo.'", Tipo = "'.$tipo.'", Remuneracao = "'.$remuneracao.'", Valor_da_bolsa = "'.$valor_da_bolsa.'", Diferencial = "'.$diferencial.'", Beneficios = "'.$beneficios.'", Empresa = "'.$empresa.'", Email = "'.$email.'", Whatsapp = "'.$whatsapp.'", Situacao_da_vaga = "'.$situacao.'", Data_validade = "'.$prazo_de_validade.'", Usuario = "'.$_SESSION['Usuario'].'" WHERE Vaga = ' . $id . '';
+
+		$update = Query($query_update);
+
+		if($update != 0){
+			$resp['status']  = 'success';	
+		} else {
+			$resp['status']  = 'error';	
+		}
+
+	} else {
+		
+		$id = Insert('INSERT INTO `vaga`(`Descricao`, `Cargo`, `Tipo`, `Remuneracao`, `Valor_da_bolsa`, `Diferencial`, `Beneficios`, `Empresa`, `Email`, `Whatsapp`, `Situacao_da_vaga`, `Data_postagem`, `Data_validade`, `Usuario`) VALUES ("'.$descricao.'",'.$cargo.','.$tipo.',"'.$remuneracao.'","'.$valor_da_bolsa.'","'.$diferencial.'","'.$beneficios.'",'.$empresa.',"'.$email.'","'.$whatsapp.'","'.$situacao.'","'.$data_postagem.'","'.$prazo_de_validade.'",'.$_SESSION['Usuario'].')');    
+
+		if($id!=0){
+			$resp['status']  = 'success';	
+		}else{
+			$resp['status']  = 'error';	
+		}
+
 	}
+
 }else{
 	$resp['status']  = 'error';
 	$resp['mensagem']  = 'Existem campos obrigatórios que não foram preenchidos.';

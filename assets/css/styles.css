@@ -9362,9 +9362,24 @@ hr {
 }
 
 .alert {
-  text-align: center;
+  text-align: left;
   width: 100%;
-  display: block;
+  display: none;
+}
+
+.avatar {
+  width: 100%;
+  max-width: 190px;
+  -webkit-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  -o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 .link-to {
@@ -10241,6 +10256,14 @@ select.form-control option {
   position: relative;
   left: 0;
   opacity: 1;
+}
+#nav-area #mural-avisos {
+  max-width: 500px;
+  margin: 0 auto;
+}
+#nav-area #mural-avisos .card-body {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /*=============*/

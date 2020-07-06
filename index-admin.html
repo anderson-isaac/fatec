@@ -97,17 +97,20 @@
         </div>
         
         <form id="form-vaga">
+
+          <input type="hidden" name="Id">
+
           <!-- Modal body -->
           <div class="modal-body">
 
             <div class="form-group">
-              <label>Descrição</label>
+              <label>Descrição *</label>
               <small>Breve descrição da vaga</small>
               <textarea name="Descricao" id="" rows="7" class="form-control" required="required"></textarea>
             </div>
 
             <div class="form-group form-group-select">
-              <label>Cargo</label>
+              <label>Cargo *</label>
               <select name="Cargo" class="form-control" required="required"></select>
               <a href="#novo-cargo" data-toggle="collapse">Adicionar novo cargo</a>
               <div class="collapse jumbotron p-3 pt-4 mt-3" id="novo-cargo">                
@@ -119,7 +122,7 @@
             </div>
 
             <div class="form-group form-group-select">
-              <label>Tipo</label>
+              <label>Tipo *</label>
               <select name="Tipo" class="form-control" data-toggle="select" data-target="#tipo-toggle">
                 <option value="0" selected>Estágio</option>
                 <option value="1">Emprego</option>
@@ -181,7 +184,7 @@
             <input type="hidden" name="Data_da_postagem" class="form-control date-field" readonly="readonly">
 
             <div class="form-group">
-              <label>Prazo de validade</label>
+              <label>Prazo de validade *</label>
               <input type="text" name="Prazo_de_validade" class="form-control date-field" required="required">
             </div>
 
@@ -266,13 +269,9 @@
         $(this).find('input').trigger('input');
       });
 
-      $(document).on('shown.bs.modal', '#vaga-modal', function () {
-        $(this).addClass('novo');
-      });
-
       $(document).on('change', 'form', function() {
         if ($(this).valid()) {
-          $(this).alertHide();
+          $(this).zalert();
         }
       })
 
@@ -406,7 +405,9 @@
       });
 
       $('#vaga-modal').on('shown.bs.modal', function (e) {
-        $('#vaga-modal').alertHide();
+        let _t = $(this);
+        _t.zalert();
+        _t.addClass('novo');        
         $('#form-vaga').validate({
           rules : {
             Data_da_postagem : {
@@ -420,11 +421,11 @@
           invalidHandler: function(form, validator) {
 
             if (!validator.numberOfInvalids()) {
-              $('#vaga-modal').alertHide();
+              _t.zalert();
               return;
             } 
 
-            $('#vaga-modal').alert('Existem campos não preenchidos', 'error');
+            $('#vaga-modal').zalert('Existem campos não preenchidos', 'error');
 
           }
         });
@@ -518,12 +519,15 @@
             _t.html(_btn);
           },
           success : function(res) {
+            $("#form-vaga [name='Id']").val(res.id_vaga);
             $("#form-vaga [name='Descricao']").val(res.descricao);
+            $("#form-vaga [name='Cargo']").val(res.cargo).trigger('change');
             $("#form-vaga [name='Tipo']").val(res.tipo);
             $("#form-vaga [name='Valor_da_bolsa']").val(res.bolsa);
             $("#form-vaga [name='Remuneracao']").val(res.remuneracao);
             $("#form-vaga [name='Diferencial']").val(res.diferencial);
             $("#form-vaga [name='Beneficios']").val(res.beneficios);
+            $("#form-vaga [name='Empresa']").val(res.empresa).trigger('change');
             $("#form-vaga [name='Email']").val(res.email);
             $("#form-vaga [name='Whatsapp']").val(res.whatsapp);
             $("#form-vaga [name='Situacao']").val(res.situacao);
@@ -543,7 +547,8 @@
         if (_t.closest('.modal').hasClass('novo')) {
           let today = new Date();        
           today = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
-          _t.find('[name=\"Data_da_postagem\"]').val(today);                    
+          _t.find('[name=\"Data_da_postagem\"]').val(today);  
+          _t.find('[name=\"Id\"]').val('');                              
         }
         if (!valid) return;
         $.ajax({
@@ -704,8 +709,8 @@
           type : "post",
           dataType : "json",
           data : _data,
-          processData: false,
-          contentType: 'multipart/form-data',
+          contentType : false,
+          processData: false,          
           beforeSend : function() {
             _t.find('button:submit').width(_t.find('button:submit').width()).html("<i class='fa fa-refresh fa-spin'></i>");
           },

@@ -10,7 +10,7 @@
       $Tipo = 0;
     
       if((isset($_SESSION['Usuario']) &&  $_SESSION['Usuario']!='') && (isset($_SESSION['Tipo']) &&  $_SESSION['Tipo']!='' && $_SESSION['Tipo']==1)){
-        $q = Query('SELECT * FROM vaga WHERE Usuario = '.$_SESSION['Usuario'].' ORDER BY Vaga DESC',0);
+        $q = Query('SELECT * FROM vaga ORDER BY Vaga DESC',0);
         $total_r = mysqli_num_rows($q);
         if($total_r > 0){
 

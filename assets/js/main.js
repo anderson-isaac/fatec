@@ -98,7 +98,7 @@ $(function() {
     $(document).on("click", ".logout", function(e) {
       e.preventDefault();
       $.ajax({
-        url : base + "server/verifica-login.php",
+        url : base + "server/req-loggout.php",
         type : 'post',
         dataType : 'json',
         success : function(res) {
@@ -151,22 +151,7 @@ $(function() {
       return true;
     }
 
-    jQuery.fn.extend({
-      alert: function (text, type) {
-        var al = $(this).find('.alert');
-        al.html(text);
-        if (type == 'success') {
-          al.addClass("alert-success");
-        } else if (type == 'error') {
-          al.addClass("alert-error");
-        }
-        al.show();
-      },
-      alertHide: function () {
-        var al = $(this).find('.alert');
-        al.hide();
-      }
-    });
+
 
 
     /**
@@ -836,7 +821,7 @@ $(function() {
         swal({
           icon : "error",
           title : "Erro",
-          text : "Não foi possível adicionar esse item aos favoritos"
+          text : ":Não foi possível adicionar esse item aos favoritos"
         })
       }
     });
@@ -888,6 +873,56 @@ $(function() {
       }
     });
   });
+
+  
+  
+  /** jQuery : funções personalizadas */
+  jQuery.fn.extend({
+
+    // Configurações para exibir Spinner em botões
+    btnLoader: function ($state) {  
+      let _t = $(this).find('button:submit');    
+      let btn_html = _t.html(); 
+      let btn_width = _t.width(); 
+      if ($state == "init") {
+        _t.attr("data-html", btn_html);        
+        _t.width(btn_width); 
+        _t.html("<i class='fa fa-refresh fa-spin'></i>");
+      } else if ($state == "stop") {
+        _t.html(_t.data('html'));
+      }
+    },
+
+    // Mostra o alert de um formulário
+    zalert: function ($text, $type) {
+      
+      var al = $(this).find('.alert');
+
+      if (!($text && $type)) {
+        console.log($text + " - " + $type);
+        al.html('')
+          .hide()
+          .removeClass()
+          .addClass('alert');
+        return 
+      } 
+
+      al.html('')    
+      .removeClass()
+      .addClass('alert');
+      al.html($text);
+      if ($type == 'success') {
+        al.addClass("alert-success");
+      } else if ($type == 'error') {
+        al.addClass("alert-error");
+      }
+      al.show();
+      
+    }
+    
+
+  });
+
 
   loadComponents();
 

@@ -10,8 +10,8 @@
 
 
   <title>Mural FATEC </title>
-  <!-- <base href="http://localhost/fatec/"/> -->
-  <base href="http://desenvolvimentomw.com.br/anderson/tests/"/>
+  <base href="http://localhost/fatec/"/>
+  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
   <meta name="description" content="" />
   <meta name="keywords" content="" />
   <link rel="stylesheet" href="assets/css/font-awesome.min.css">
@@ -28,7 +28,7 @@
 
   <section class="page-section">
     <nav class="app-nav">
-      <a :href="mural.html?tab=1">
+      <a href="mural.html?tab=1">
         <i class="fa fa-chevron-left"></i>
       </a>
       <b>Voltar</b>
@@ -37,13 +37,12 @@
       <div class="vue-loading" v-if="loading">
         <i class="fa fa-spinner fa-spin"></i>
       </div>
-      <div class="card" v-if="aviso && !loading">
-        <img class="card-img-top" :src="`${ aviso.capa }`" alt="">          
+      <div class="card" v-if="aviso && !loading">        
         <div class="card-body">
           <h5 class="card-title">
             <div class="author">                
               <a :href="`autor.html?id=${ aviso.autor }`">
-                <img :src="`${ aviso.autor_foto }`" alt="" class="profile-photo">
+                <img :src="`server/imagens/${ aviso.autor_foto }`" alt="" class="profile-photo">
               </a>
               <small>
                 <a :href="`autor.html?id=${aviso.autor}`">
@@ -51,11 +50,19 @@
                 </a>
               </small>
             </div>
-            {{ aviso.titulo }}
           </h5>
-          <p class="card-text">
-            {{ aviso.texto }}
-          </p>
+          <div class="row">
+            <div class="col-12 col-md-3">
+              <img class="img-fluid my-0" :src="`server/imagens/${ aviso.capa }`" alt="">
+            </div>
+            <div class="col-12 col-md-9">
+              <h4>{{ aviso.titulo }}</h4>
+              <p class="card-text">
+                {{ aviso.texto }}
+              </p>
+            </div>
+          </div>
+          <hr>
           <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>
         </div>
         <div class="btn-group">

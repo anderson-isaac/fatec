@@ -15,7 +15,7 @@
 				}
 			 
 				$allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
-				if(isset($_FILES['Curriculo']) && $_FILES['Curriculo']!=''){
+				if(isset($_FILES['Curriculo']) && $_FILES['Curriculo']['name'] !=''){
 					
 
 					$detectedType = exif_imagetype($_FILES['Curriculo']['tmp_name']);

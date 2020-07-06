@@ -10,8 +10,8 @@
 
 
   <title>Mural FATEC </title>
-  <!-- <base href="http://localhost/fatec/"/> -->
-  <base href="http://desenvolvimentomw.com.br/anderson/tests/"/>
+  <base href="http://localhost/fatec/"/>
+  <!-- <base href="http://desenvolvimentomw.com.br/anderson/tests/"/> -->
   <meta name="description" content="" />
   <meta name="keywords" content="" />
   <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
@@ -54,7 +54,7 @@
               </div>
               <div class="form-group">
                 <label>Seu currículo </label>                
-                <a :href="info.curriculo" class="btn btn-light" download="download">
+                <a :href="info.curriculo" class="btn btn-light" target="_blank" disabled="disabled">
                   <i class="fa fa-download"></i> Baixar
                 </a>                
               </div>
@@ -69,7 +69,7 @@
                 </div>
                 <div style="display: none;">
                   <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> Salvar</button>
-                  <button id="cancelar" type="button" class="btn btn-secondary mt-2"><i class="fa fa-times"></i> Cancelar</button>
+                  <button id="cancelar" type="button" class="btn btn-secondary"><i class="fa fa-times"></i> Cancelar</button>
                 </div>
               </div>
             </form>
@@ -78,27 +78,22 @@
             <div class="surface">
               <form id="senha-form" class="form-validate">
                 <h5>Alterar Senha</h5>
-                <div class="alert alert-error" style="display: none;"></div>
-                <div class="form-group">
-                  <div class="form-group">
-                    <label>Senha Atual</label>
-                    <input type="password" name="Senha_atual" class="form-control" required="required">
-                    <div class="see-password"><i class="fa fa-square-o"></i> Mostrar senha</div>
-                  </div>
+                <div class="alert"></div>
+                <div class="form-group">                  
+                  <label>Senha Atual</label>
+                  <input type="password" name="Senha_atual" class="form-control mb-0" required="required">
+                  <div class="see-password pull-right"><i class="fa fa-square-o"></i> Mostrar senha</div>
                 </div>
-                <div class="form-group">
-                  <div class="form-group">
-                    <label>Senha Nova</label>
-                    <input type="password" name="Senha_nova" class="form-control" required="required">
-                    <div class="see-password"><i class="fa fa-square-o"></i> Mostrar senha</div>
-                  </div> 
+                <br>
+                <div class="form-group">                  
+                  <label>Senha Nova</label>
+                  <input type="password" name="Senha_nova" class="form-control mb-0" required="required">
+                  <div class="see-password pull-right"><i class="fa fa-square-o"></i> Mostrar senha</div>
                 </div>
-                <div class="form-group">
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                      Atualizar
-                    </button>
-                  </div>
+                <div class="form-group">                  
+                  <button type="submit" class="btn btn-primary mt-3">
+                    Atualizar
+                  </button>
                 </div>
               </form>
             </div>
@@ -167,35 +162,29 @@
           });
         });
 
-        $(document).on('submit', '#conta-form', function(e) {
-          e.preventDefault();
-          var _t = $(this);
-          var submit_button = $(this).find('button:submit');
-          _t.find('.alert').hide();
+        $(document).on('submit', '#senha-form', function(e) {
+          e.preventDefault();          
+          var _t = $(this);                    
+          _t.btnLoader('init');
           $.ajax({
             url: 'server/set-password.php',
             type: 'post',
             dataType: 'json',
             data: _t.serializeArray(),
-            beforeSend: function() {
-              submit_button.html("<i class='fa fa-refresh fa-spin'></i>");
-              _t.find('.alert').html('').removeClass('alert-error');
+            complete : function() {
+              _t.btnLoader('stop');
             },
-            success: function(json) {
-              if (json.status == '1') {
-                _t.find('.button > div').toggle();
-                _t.find('.disable-me').prop('disabled', true).removeClass('disable-me');
-              } else {
-                _t.find('.alert').html(json.erro).show();
-                return false;
-              }
-              submit_button.html("<i class='material-icons'>save</i> Salvar");
+            success : function(json) {
+              if (json.status == '1') {                
+                _t.zalert(json.mensagem, 'success');                
+              } else {                                
+                _t.zalert(json.mensagem, 'error');                
+              }              
             },
-            error: function() {
-              submit_button.html("<i class='material-icons'>save</i> Salvar");
-              _t.find('.alert').html('Ocorreu um erro inesperado').show();
+            error: function() {              
+              _t.zalert('Ocorreu um erro inesperado', 'error');
             }
-          });
+          });           
         });
 
     });

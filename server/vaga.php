@@ -23,33 +23,37 @@
               $resp["empresa"]   = get('empresa',$r['Empresa']);
               $resp["postado"]   = formata_data($r['Data_postagem']);
 
-              $q_testa_usuario = Query('SELECT * FROM usuario_vaga WHERE Usuario = '.$_SESSION['User'].' AND Vaga = '.$id.'');
+              $q_testa_usuario = Query('SELECT * FROM usuario_vaga WHERE Usuario = '.$_SESSION['Usuario'].' AND Vaga = '.$id.'');
               if(mysqli_num_rows($q_testa_usuario) > 0){
                 $r_testa_usuario = mysqli_fetch_assoc($q_testa_usuario);
       
                 if($r_testa_usuario['Favorito']==1){
-                    $resp["favorito"]  = 'true';
+                    $resp["favorito"]  = true;
                 }else{
-                    $resp["favorito"] = 'false';  
+                    $resp["favorito"] = false;  
                 }
 
                 if($r_testa_usuario['Inscrito']==1){
-                    $resp["candidato"] = 'true';  
+                    $resp["candidato"] = true;  
                 }else{
-                    $resp["candidato"] = 'false';  
+                    $resp["candidato"] = false;  
                 }
                       
                 
               }else{
-                $resp["candidato"] = 'false';  
-                $resp["favorito"] = 'false';  
+                $resp["candidato"] = false;  
+                $resp["favorito"] = false;  
               }
 
               $resp["descricao"] = $r['Descricao']; 
 
               $resp['valor_da_bolsa']     = $r['Valor_da_bolsa'];
               $resp['remuneracao']        = $r['Remuneracao'];
-              $resp['tipo']        = $r['Tipo'];
+              if ($resp['tipo'] == 0) {
+                $resp['tipo']        = 'Estágio';
+              } else {
+                $resp['tipo']        = 'Emprego';
+              }
 
              $resp['diferencial']        = $r['Diferencial'];
              $resp['beneficios']        = $r['Beneficios'];
@@ -65,7 +69,7 @@
                 $r_user = mysqli_fetch_assoc($q_user);
 
                 $resp['autor_id'] = $r_user['Usuario'];
-                $resp['autor_foto'] = $Config['UrlServer'].'imagens/'.$r_user['Imagem'];
+                $resp['autor_foto'] = $r_user['Imagem'];
                 $resp['autor_nome'] = $r_user['Nome'];
              
              }

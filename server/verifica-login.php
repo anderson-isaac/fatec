@@ -2,12 +2,13 @@
 	   session_start();
 	
 		$arr = array();
-		if(isset($_SESSION['User']) && $_SESSION['User']!='' && is_numeric($_SESSION['User'])){
-			$arr['status'] = false;
+		if(isset($_SESSION['Usuario']) && $_SESSION['Usuario']!='' && is_numeric($_SESSION['Usuario'])){
+			$arr['status'] = true;
 			$arr['tipo']   = $_SESSION['Tipo'];
 		}else{
 			$arr['status'] = false;
 		}
 
 		echo json_encode($arr);
+
 		exit;

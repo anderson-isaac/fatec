@@ -57,10 +57,10 @@
                   <span v-if="vaga.tipo == 1">Emprego</span>                  
                 </li>
                 <li v-if="vaga.tipo == 0">
-                  <b>Valor da Bolsa</b> {{ vaga.valor_da_bolsa }}
+                  <b>Valor da Bolsa</b> <span class="money">{{ vaga.valor_da_bolsa }}</span>
                 </li>
                 <li v-if="vaga.tipo == 1">
-                  <b>Remuneracao</b> {{ vaga.remuneracao }}
+                  <b>Remuneração</b> <span class="money">{{ vaga.remuneracao }}</span>
                 </li> 
                 <li><b>Postado em</b> {{ vaga.postado }}</li>
               </ul>
@@ -124,13 +124,13 @@
           <ul v-for="aviso in avisos" v-if="!loading">
             <li class="card">
               <a :href="`aviso.html?id=${ aviso.id }`" v-if="aviso.capa">
-                <img class="card-img-top" :src="`${ aviso.capa }`" alt="">
+                <img class="card-img-top" :src="`server/imagens/${ aviso.capa }`" alt="">
               </a>
               <div class="card-body">
                 <h5 class="card-title">
                   <div class="author">
-                    <a :href="`autor.html?id=${ aviso.autor }`">
-                      <img :src="`${ aviso.autor_foto }`" alt="" class="profile-photo">
+                    <a :href="`autor.html?id=${ aviso.autor_id }`">
+                      <img :src="`server/imagens/${ aviso.autor_foto }`" alt="" class="profile-photo">
                     </a>
                     <small>
                       <a :href="`autor.html?id=${aviso.autor}`">
@@ -138,12 +138,12 @@
                       </a>
                     </small>
                   </div>
-                  <a :href="`aviso.html?id=${ aviso.id }`">
+                  <a :href="`autor.html?id=${ aviso.autor_id }`">
                   {{ aviso.titulo }}
                   </a>
                 </h5>
-                <p class="card-text">
-                  {{ aviso.resumo }}
+                <p class="card-text limit-text" data-length="240">
+                  {{ aviso.texto }}
                 </p>
                 <p class="card-text"><small class="text-muted">Postado em {{ aviso.postado }}</small></p>
               </div>
@@ -262,12 +262,15 @@
                   if (!this.once) {
                     plus = 40;
                   }
-                $('html, body').animate({
-                  scrollTop : scrollHeight + plus
-                }, 500);
+                // $('html, body').animate({
+                //   scrollTop : scrollHeight + plus
+                // }, 500);
               }
               this.slice += 6;
               this.once = false;
+              setTimeout(function() {
+                $('.money').mask('#.##0,00', {reverse: true});
+              }, 300)
             })
           }
         },
@@ -349,7 +352,16 @@
                 }, 500);
                 this.slice += 6;
                 this.once = false;
-              
+                setTimeout(function() {
+                  $('.limit-text').each(function() {
+                    var text = $(this).text();
+                    var len = $(this).data('length');
+                    if (text.length > len) {
+                      text = text.substring(0, len);
+                      $(this).text(text + '...');
+                    }
+                  });
+                },300);
             })
           }
         },
