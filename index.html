@@ -35,14 +35,6 @@
                 <form id="login-form">
                   <p class="card-text">Digite seu <b>E-mail</b> e <b>Senha</b> para acessar</p>                      
                   <div class="alert alert-top my-1" style="display: none;"></div>
-                  <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" class="form-control" name="Login" autocomplete="off" required="required">
-                  </div>
-                  <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" class="form-control" name="Senha" autocomplete="off" required="required">
-                  </div>
                   <div class="text-left form-inline">
                     <div class="custom-control custom-radio mr-3">
                       <input type="radio" class="custom-control-input" id="TipoAcessoAluno" name="Tipo_acesso" value="aluno" checked="checked">
@@ -51,6 +43,20 @@
                     <div class="custom-control custom-radio">
                       <input type="radio" class="custom-control-input" id="TipoAcessoProfessor" name="Tipo_acesso" value="professor">
                       <label class="custom-control-label" for="TipoAcessoProfessor">Professor/Admin</label>
+                    </div>
+                   </div>
+                  <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" class="form-control" name="Login" autocomplete="off" required="required">
+                  </div>
+                  <div class="form-group mb-0">
+                    <label>Senha</label>
+                    <input type="password" class="form-control mb-0" name="Senha" autocomplete="off" required="required">
+                  </div>
+                  <div class="form-group justify-content-end text-right mt-1">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="Lembrete" name="Lembrete" value="SIM">
+                      <label class="custom-control-label" for="Lembrete"> Lembre-se de mim</label>
                     </div>
                   </div>
                   <hr>
@@ -76,6 +82,7 @@
     <script src="./assets/js/build.js"></script>
   
     <script>
+
       $(function() {
 
         $(document).on('submit', '#login-form', function(e) {

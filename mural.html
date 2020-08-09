@@ -28,14 +28,36 @@
       <div id="nav-area" class="container tall">
 
         <div id="mural-vagas" class="nav-area-item active">
-          <div class="filters form-inline">
-            <div class="custom-control custom-checkbox mr-3">
-              <input type="checkbox" class="custom-control-input" id="vagas-favoritos" v-model="filtrarFavoritos">
-              <label class="custom-control-label" for="vagas-favoritos"> Favoritos</label>
+          <div class="filter-box">            
+            <div class="form-row">
+              <div class="form-group col-12 col-md-4 mb-0">
+                <label>Palavra-chave</label>
+                <input type="text" name="Palavra_chave" class="form-control mb-0">
+              </div>
+              <div class="form-group col-12 col-md-4 mb-0">
+                <label>Curso</label>
+                <select name="Curso" class="form-control mb-0">
+                  <option value="">Selecione o curso</option>
+                  <option value="1" selected>Análise e desenvolvimento de sistemas</option>
+                  <option value="2">Comércio exterior</option>
+                  <option value="3">Eletrônica automotiva</option>
+                  <option value="4">Fabricação mecânica</option>
+                </select>
+              </div>
+              <div class="form-group col-12 col-md-4 mb-0">
+                <label>Empresa</label>
+                <input type="text" name="Empresa" class="form-control mb-0">
+              </div>
             </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="vagas-candidaturas" v-model="filtrarCandidaturas">
-              <label class="custom-control-label" for="vagas-candidaturas"> Candidaturas</label>
+            <div class="filters form-inline">
+              <div class="custom-control custom-checkbox mr-3">
+                <input type="checkbox" class="custom-control-input" id="vagas-favoritos" v-model="filtrarFavoritos">
+                <label class="custom-control-label" for="vagas-favoritos"> Favoritos</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="vagas-candidaturas" v-model="filtrarCandidaturas">
+                <label class="custom-control-label" for="vagas-candidaturas"> Candidaturas</label>
+              </div>
             </div>
           </div>
           <div class="vue-loading" v-if="loading">

@@ -1,5 +1,5 @@
+// $url : 'http://localhost/fatec/';
 $url : 'http://desenvolvimentomw.com.br/anderson/tests/';
-$url : 'http://localhost/fatec/';
 
 @import "./theme.scss";
 @import "./bootstrap/bootstrap.scss";
@@ -38,6 +38,14 @@ h1, h2, h3, label, strong {
 }
 hr {
   border-color: rgba($dark, 15%);
+}
+.filter-box {
+  background-color: #fff !important;
+
+  margin: 5px 0 30px;
+  padding: 12px;
+  @include border-radius(5px);
+  @include box-shadow(0 9px 16px rgba(0,0,0,.15));
 }
 .alert {
   text-align: left;
@@ -89,6 +97,8 @@ button {
 }
 .custom-control-label {
   position: relative;
+  font-size: 14px;
+  font-weight: normal;
 }
 .toggle-area {
   .form-group {
@@ -302,7 +312,8 @@ header {
   margin-bottom: 15px;
   .custom-control-label {
     position: static;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 300;
     &:before {
       background-color: #fff;
       @include box-shadow(0 3px 3px rgba($dark, 25%)); 

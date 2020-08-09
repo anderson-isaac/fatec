@@ -135,19 +135,31 @@
             </div>
 
             <div class="form-group form-group-select">
-              <label>Semestre</label>
-              <select name="Semestre" class="form-control" required="required">
+              <label>Semestre Inicial</label>
+              <select name="Semestre_inicial" class="form-control" required="required">
                 <option value=""></option>
-                <option value="1">A partir do 1º Semestre</option>
-                <option value="2">A partir do 2º Semestre</option>
-                <option value="3">A partir do 3º Semestre</option>
-                <option value="4">A partir do 4º Semestre</option>
-                <option value="5">A partir do 5º Semestre</option>
+                <option value="1">1º Semestre</option>
+                <option value="2">2º Semestre</option>
+                <option value="3">3º Semestre</option>
+                <option value="4">4º Semestre</option>
+                <option value="5">5º Semestre</option>
+              </select>
+            </div>
+
+            <div class="form-group form-group-select">
+              <label>Semestre Final</label>
+              <select name="Semestre_final" class="form-control" required="required">
+                <option value=""></option>
+                <option value="1">1º Semestre</option>
+                <option value="2">2º Semestre</option>
+                <option value="3">3º Semestre</option>
+                <option value="4">4º Semestre</option>
+                <option value="5">5º Semestre</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label>Conhecimento técnico</label>
+              <label>Conhecimentos técnicos</label>
               <textarea name="Conhecimento_tecnico" rows="4" class="form-control"></textarea>
             </div>
 
@@ -181,6 +193,18 @@
             <div class="form-group">
               <label>Whatsapp</label>
               <input type="text" name="Whatsapp" class="form-control cel-field">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="Cadastro_app" name="Cadastro_app" value="Cadastro_app">
+                <label class="custom-control-label" for="Cadastro_app">Cadastro pela aplicação? *</label>
+              </div>
+              <div>
+                (*) Marcar esta opção para quando o cadastramento da vaga for gerenciado pela própria empresa ou outra plataforma, não permitindo assim o envio do currículo pelo mural da Fatec.
+              </div>
             </div>
 
             <div class="form-group form-group-select">
